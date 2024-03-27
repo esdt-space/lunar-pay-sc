@@ -1,11 +1,11 @@
 {
     "buildInfo": {
         "rustc": {
-            "version": "1.76.0-nightly",
-            "commitHash": "d86d65bbc19b928387f68427fcc3a0da498d8a19",
-            "commitDate": "2023-12-10",
+            "version": "1.71.0-nightly",
+            "commitHash": "a2b1646c597329d0a25efa3889b66650f65de1de",
+            "commitDate": "2023-05-25",
             "channel": "Nightly",
-            "short": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)"
+            "short": "rustc 1.71.0-nightly (a2b1646c5 2023-05-25)"
         },
         "contractCrate": {
             "name": "lunarpay",
@@ -282,6 +282,44 @@
             "outputs": []
         },
         {
+            "name": "donate",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "token",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "receiver",
+                    "type": "Address"
+                },
+                {
+                    "name": "metadata",
+                    "type": "Option<bytes>"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "donateWithWalletBalance",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "receiver",
+                    "type": "Address"
+                },
+                {
+                    "name": "metadata",
+                    "type": "Option<bytes>"
+                }
+            ],
+            "outputs": []
+        },
+        {
             "name": "getSubscriptionIds",
             "mutability": "readonly",
             "inputs": [],
@@ -509,6 +547,41 @@
         },
         {
             "identifier": "payment",
+            "inputs": [
+                {
+                    "name": "sender",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "receiver",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier",
+                    "indexed": true
+                },
+                {
+                    "name": "token_nonce",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint",
+                    "indexed": true
+                },
+                {
+                    "name": "metadata",
+                    "type": "Option<bytes>",
+                    "indexed": true
+                }
+            ]
+        },
+        {
+            "identifier": "donation",
             "inputs": [
                 {
                     "name": "sender",

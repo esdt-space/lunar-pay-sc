@@ -5,12 +5,14 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           28
+// Endpoints:                           30
 // Async Callback (empty):               1
-// Total number of exported functions:  30
+// Total number of exported functions:  32
 
 #![no_std]
-#![allow(internal_features)]
+
+// Configuration that works with rustc < 1.73.0.
+// TODO: Recommended rustc version: 1.73.0 or newer.
 #![feature(lang_items)]
 
 multiversx_sc_wasm_adapter::allocator!();
@@ -40,6 +42,8 @@ multiversx_sc_wasm_adapter::endpoints! {
         transferTokens => transfer
         pay => pay
         payWithWalletBalance => pay_with_wallet_balance
+        donate => donate
+        donateWithWalletBalance => donate_with_wallet_balance
         getSubscriptionIds => subscription_ids
         getAccountSubscriptionsCreatedList => account_subscriptions_created_list
         getAccountSubscriptionsMembershipList => account_subscriptions_membership_list
