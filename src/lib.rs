@@ -13,12 +13,14 @@ pub trait LunarPay:
     modules::protocol::storage::StorageModule +
     modules::protocol::endpoints::EndpointsModule +
     modules::protocol::validation::ValidationModule +
+    modules::protocol::token_utils::TokenUtilsModule +
 
     // Accounts Module
     modules::accounts::views::ViewsModule +
     modules::accounts::events::EventsModule +
     modules::accounts::storage::StorageModule +
     modules::accounts::validation::ValidationModule +
+    modules::accounts::balance_utils::BalanceUtilsModule +
     modules::accounts::endpoints::EndpointsModule +
 
     // Agreements Module

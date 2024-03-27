@@ -7,6 +7,7 @@ use crate::modules::subscriptions::types::{Subscription};
 pub trait MemberEndpoints:
     crate::modules::accounts::storage::StorageModule +
     crate::modules::accounts::validation::ValidationModule +
+    crate::modules::accounts::balance_utils::BalanceUtilsModule +
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
 
     crate::modules::subscriptions::amount::AmountModule +

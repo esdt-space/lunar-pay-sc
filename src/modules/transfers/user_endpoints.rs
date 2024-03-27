@@ -5,6 +5,7 @@ multiversx_sc::derive_imports!();
 pub trait UserEndpointsModule:
     crate::modules::accounts::storage::StorageModule +
     crate::modules::accounts::validation::ValidationModule +
+    crate::modules::accounts::balance_utils::BalanceUtilsModule +
 
     crate::modules::transfers::events::EventsModule +
     crate::modules::transfers::balance_transfer::BalanceTransferModule

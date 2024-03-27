@@ -267,6 +267,21 @@
             "outputs": []
         },
         {
+            "name": "payWithWaleltBalance",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "receiver",
+                    "type": "Address"
+                },
+                {
+                    "name": "metadata",
+                    "type": "Option<bytes>"
+                }
+            ],
+            "outputs": []
+        },
+        {
             "name": "getSubscriptionIds",
             "mutability": "readonly",
             "inputs": [],

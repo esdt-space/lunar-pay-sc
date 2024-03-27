@@ -5,10 +5,12 @@ multiversx_sc::derive_imports!();
 pub trait EndpointsModule:
     crate::modules::protocol::storage::StorageModule +
     crate::modules::protocol::validation::ValidationModule +
+    crate::modules::protocol::token_utils::TokenUtilsModule +
 
     crate::modules::accounts::events::EventsModule +
     crate::modules::accounts::storage::StorageModule +
     crate::modules::accounts::validation::ValidationModule +
+    crate::modules::accounts::balance_utils::BalanceUtilsModule +
 
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
@@ -21,12 +23,10 @@ pub trait EndpointsModule:
 
         require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
 
-        if !self.used_token_ids().contains(&token) {
-            self.used_token_ids().insert(token.clone());
-        }
+        self.register_token(&token);
 
         self.deposit_event(&caller, &token, 0, &payment_value);
-        self.account_balance(&caller, &token).update(|balance| *balance += &payment_value);
+        self.increase_account_token_balance(&caller, &token, &payment_value);
     }
 
     #[endpoint(withdrawEgld)]
@@ -49,12 +49,10 @@ pub trait EndpointsModule:
 
         require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
 
-        if !self.used_token_ids().contains(&token) {
-            self.used_token_ids().insert(token.clone());
-        }
+        self.register_token(&token);
 
         self.deposit_event(&caller, &token, 0, &amount);
-        self.account_balance(&caller, &token).update(|balance| *balance += &amount);
+        self.increase_account_token_balance(&caller, &token, &amount);
     }
 
     #[endpoint(withdrawEsdt)]
