@@ -10,9 +10,7 @@
 // Total number of exported functions:  30
 
 #![no_std]
-
-// Configuration that works with rustc < 1.73.0.
-// TODO: Recommended rustc version: 1.73.0 or newer.
+#![allow(internal_features)]
 #![feature(lang_items)]
 
 multiversx_sc_wasm_adapter::allocator!();
@@ -41,7 +39,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         getLastAgreementId => last_agreement_id
         transferTokens => transfer
         pay => pay
-        payWithWaleltBalance => pay_with_wallet_balance
+        payWithWalletBalance => pay_with_wallet_balance
         getSubscriptionIds => subscription_ids
         getAccountSubscriptionsCreatedList => account_subscriptions_created_list
         getAccountSubscriptionsMembershipList => account_subscriptions_membership_list
