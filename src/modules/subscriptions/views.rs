@@ -5,14 +5,42 @@ use core::ops::Deref;
 
 #[multiversx_sc::module]
 pub trait ViewsModule:
+crate::modules::accounts::storage::StorageModule +
+crate::modules::accounts::validation::ValidationModule +
+
 crate::modules::subscriptions::amount::AmountModule +
+crate::modules::subscriptions::cycles::CyclesModule +
 crate::modules::subscriptions::storage::StorageModule +
+crate::modules::subscriptions::validation::ValidationModule +
 {
+    /**
+     * It returns the subscription subscription charge amount information.
+     * Returns: (pendingChargeAmount, affordableChargeAmount)
+     */
+    #[view(getUserSubscriptionsChargeAmounts)]
+    fn get_subscription_charge_amounts(&self, id: u64) -> (BigUint, BigUint) {
+        let mut pending_amount = BigUint::zero();
+        let mut affordable_amount = BigUint::zero();
+
+        let subscription = self.subscription_by_id(id).get();
+        let members = self.current_subscription_members_list(id);
+
+        for account in members.iter() {
+            let (account_pending_amount, account_affordable_amount) =
+                self.get_subscription_charge_amounts_for_account(&subscription, &account);
+
+            pending_amount += account_pending_amount;
+            affordable_amount += account_affordable_amount;
+        }
+
+        (pending_amount, affordable_amount)
+    }
+
     /**
      * It returns the subscription token outflow for a given account
      */
     #[view(getUserSubscriptionsOutflow)]
-    fn get_user_subscriptions_outflow(&self, address: &ManagedAddress){
+    fn get_user_subscriptions_outflow(&self, _address: &ManagedAddress){
 
     }
 

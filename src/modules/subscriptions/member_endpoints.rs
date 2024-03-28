@@ -11,6 +11,7 @@ pub trait MemberEndpoints:
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
 
     crate::modules::subscriptions::amount::AmountModule +
+    crate::modules::subscriptions::cycles::CyclesModule +
     crate::modules::subscriptions::events::EventsModule +
     crate::modules::subscriptions::storage::StorageModule +
     crate::modules::subscriptions::validation::ValidationModule +
