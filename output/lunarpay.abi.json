@@ -714,6 +714,26 @@
                     "indexed": true
                 }
             ]
+        },
+        {
+            "identifier": "chargeSubscription",
+            "inputs": [
+                {
+                    "name": "id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "timestamp",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "data",
+                    "type": "variadic<SubscriptionMultiChargeResult>",
+                    "indexed": true
+                }
+            ]
         }
     ],
     "hasCallback": false,
@@ -745,6 +765,19 @@
                 {
                     "name": "failed",
                     "type": "Option<tuple<BigUint,u64>>"
+                }
+            ]
+        },
+        "SubscriptionMultiChargeResult": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "acccount",
+                    "type": "Address"
+                },
+                {
+                    "name": "data",
+                    "type": "tuple<Option<tuple<BigUint,u64>>,Option<tuple<BigUint,u64>>>"
                 }
             ]
         },
