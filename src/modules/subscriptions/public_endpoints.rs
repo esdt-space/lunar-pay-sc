@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::modules::subscriptions::types::{Subscription, SubscriptionChargeData};
+use crate::modules::subscriptions::types::{Subscription, SubscriptionMultiChargeResult};
 
 #[multiversx_sc::module]
 pub trait PublicEndpoints:
@@ -27,6 +27,7 @@ pub trait PublicEndpoints:
         require!(!members.is_empty(), "Nothing to send");
 
         let timestamp = self.blockchain().get_block_timestamp();
+        let mut events_vec: MultiValueEncoded<SubscriptionMultiChargeResult<Self::Api>> = MultiValueEncoded::new();
 
         for account in members.iter() {
             let (successful, failed) = self.trigger_subscription_for_account(&subscription, &account);
@@ -34,12 +35,15 @@ pub trait PublicEndpoints:
             if let Some((amount, cycles)) = successful.clone() {
                 self.do_internal_transfer_and_update_balances(&account, &subscription.owner, &subscription.token_identifier, &amount);
                 self.update_subscription_last_trigger_timestamp(&subscription, &account, cycles);
-
             }
 
-            let charge_data = SubscriptionChargeData { successful: successful, failed: failed };
-            self.charge_subscription_event(subscription.id, &account, timestamp, charge_data);
+            // Add an event if the account has something to pay
+            if successful.is_some() || failed.is_some() {
+                events_vec.push(SubscriptionMultiChargeResult::new(&account, successful, failed));
+            }
         }
+
+        self.charge_subscription_multi_event(subscription.id, timestamp, events_vec);
     }
 
     fn trigger_subscription_for_account(&self, subscription: &Subscription<Self::Api>, account: &ManagedAddress)

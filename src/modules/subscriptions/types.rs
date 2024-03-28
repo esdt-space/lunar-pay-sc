@@ -32,7 +32,7 @@ pub struct Subscription<M: ManagedTypeApi> {
     pub token_identifier: EgldOrEsdtTokenIdentifier<M>,
 }
 
-// pub type ChargeOperationValue<M: ManagedTypeApi> = Option<(BigUint<M>, u64)>;
+pub type ChargeOperationValue<M: ManagedTypeApi> = Option<(BigUint<M>, u64)>;
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi, Clone, PartialEq, Eq)]
 pub struct SubscriptionChargeData<M: ManagedTypeApi> {
@@ -43,20 +43,14 @@ pub struct SubscriptionChargeData<M: ManagedTypeApi> {
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi, Clone, PartialEq, Eq)]
 pub struct SubscriptionMultiChargeResult<M: ManagedTypeApi> {
     pub acccount: ManagedAddress<M>,
-    pub data: SubscriptionChargeData<M>,
+    pub data: (Option<(BigUint<M>, u64)>, Option<(BigUint<M>, u64)>),
 }
 
-// impl<M: ManagedTypeApi>  SubscriptionChargeResult<M> {
-//     pub fn new(account: &ManagedAddress<M>) -> Self {
-//         SubscriptionChargeResult {
-//             acccount: account.clone(),
-//             successful: None,
-//             failed: None,
-//         }
-//     }
-//
-//     pub fn put_result(&mut self, success_value: ChargeOperationValue<M>, fail_value: ChargeOperationValue<M>) {
-//         self.successful = success_value;
-//         self.failed = fail_value;
-//     }
-// }
+impl<M: ManagedTypeApi> SubscriptionMultiChargeResult<M> {
+    pub fn new(account: &ManagedAddress<M>, success_value: Option<(BigUint<M>, u64)>, fail_value: Option<(BigUint<M>, u64)>) -> Self {
+        SubscriptionMultiChargeResult {
+            acccount: account.clone(),
+            data: (success_value, fail_value)
+        }
+    }
+}
