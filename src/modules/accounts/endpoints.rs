@@ -3,16 +3,14 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait EndpointsModule:
-    crate::modules::protocol::storage::StorageModule +
-    crate::modules::protocol::validation::ValidationModule +
-    crate::modules::protocol::token_utils::TokenUtilsModule +
-
-    crate::modules::accounts::events::EventsModule +
-    crate::modules::accounts::storage::StorageModule +
-    crate::modules::accounts::validation::ValidationModule +
-    crate::modules::accounts::balance_utils::BalanceUtilsModule +
-
-    crate::modules::transfers::balance_transfer::BalanceTransferModule +
+    crate::modules::protocol::storage::StorageModule
+    + crate::modules::protocol::validation::ValidationModule
+    + crate::modules::protocol::token_utils::TokenUtilsModule
+    + crate::modules::accounts::events::EventsModule
+    + crate::modules::accounts::storage::StorageModule
+    + crate::modules::accounts::validation::ValidationModule
+    + crate::modules::accounts::balance_utils::BalanceUtilsModule
+    + crate::modules::transfers::balance_transfer::BalanceTransferModule
 {
     #[payable("EGLD")]
     #[endpoint(depositEgld)]
@@ -21,7 +19,10 @@ pub trait EndpointsModule:
         let token = EgldOrEsdtTokenIdentifier::egld();
         let payment_value = self.call_value().egld_value().clone_value();
 
-        require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
+        require!(
+            self.is_token_whitelisted(&token),
+            "Token is not whitelisted"
+        );
 
         self.register_token(&token);
 
@@ -47,7 +48,10 @@ pub trait EndpointsModule:
         let amount = transfer.amount;
         let token = EgldOrEsdtTokenIdentifier::esdt(transfer.token_identifier);
 
-        require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
+        require!(
+            self.is_token_whitelisted(&token),
+            "Token is not whitelisted"
+        );
 
         self.register_token(&token);
 

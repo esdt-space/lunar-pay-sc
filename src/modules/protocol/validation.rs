@@ -2,9 +2,7 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
-pub trait ValidationModule:
-    crate::modules::protocol::storage::StorageModule
-{
+pub trait ValidationModule: crate::modules::protocol::storage::StorageModule {
     fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) -> bool {
         self.whitelisted_token_ids().contains(&token)
     }

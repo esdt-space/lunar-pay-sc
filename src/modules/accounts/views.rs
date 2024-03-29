@@ -3,14 +3,16 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait ViewsModule:
-    crate::modules::protocol::storage::StorageModule +
-    crate::modules::accounts::storage::StorageModule
+    crate::modules::protocol::storage::StorageModule + crate::modules::accounts::storage::StorageModule
 {
     /**
      * It returns the total account balances
      */
     #[view(getAccountBalances)]
-    fn get_account_balances(&self, address: &ManagedAddress) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
+    fn get_account_balances(
+        &self,
+        address: &ManagedAddress,
+    ) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
         let mut items_vec = MultiValueEncoded::new();
 
         for token in self.used_token_ids().iter() {

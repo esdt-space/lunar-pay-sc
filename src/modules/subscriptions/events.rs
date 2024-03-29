@@ -1,11 +1,18 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::modules::subscriptions::types::{Subscription, SubscriptionAmountType, SubscriptionChargeData, SubscriptionMultiChargeResult, SubscriptionType};
+use crate::modules::subscriptions::types::{
+    Subscription, SubscriptionAmountType, SubscriptionChargeData, SubscriptionMultiChargeResult,
+    SubscriptionType,
+};
 
 #[multiversx_sc::module]
 pub trait EventsModule {
-    fn trigger_subscription_created_event(&self, subscription: Subscription<Self::Api>, amount: Option<BigUint>) {
+    fn trigger_subscription_created_event(
+        &self,
+        subscription: Subscription<Self::Api>,
+        amount: Option<BigUint>,
+    ) {
         self.create_subscription_event(
             subscription.id,
             &subscription.owner,
@@ -50,7 +57,8 @@ pub trait EventsModule {
 
         #[indexed] timestamp: u64,
         #[indexed] data: SubscriptionChargeData<Self::Api>,
-    );    #[event("chargeSubscription")]
+    );
+    #[event("chargeSubscription")]
 
     fn charge_subscription_multi_event(
         &self,

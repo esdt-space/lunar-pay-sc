@@ -5,13 +5,12 @@ use core::ops::Deref;
 
 #[multiversx_sc::module]
 pub trait ViewsModule:
-crate::modules::accounts::storage::StorageModule +
-crate::modules::accounts::validation::ValidationModule +
-
-crate::modules::subscriptions::amount::AmountModule +
-crate::modules::subscriptions::cycles::CyclesModule +
-crate::modules::subscriptions::storage::StorageModule +
-crate::modules::subscriptions::validation::ValidationModule +
+    crate::modules::accounts::storage::StorageModule
+    + crate::modules::accounts::validation::ValidationModule
+    + crate::modules::subscriptions::amount::AmountModule
+    + crate::modules::subscriptions::cycles::CyclesModule
+    + crate::modules::subscriptions::storage::StorageModule
+    + crate::modules::subscriptions::validation::ValidationModule
 {
     /**
      * It returns the subscription subscription charge amount information.
@@ -40,45 +39,87 @@ crate::modules::subscriptions::validation::ValidationModule +
      * It returns the subscription token outflow for a given account
      */
     #[view(getUserSubscriptionsOutflow)]
-    fn get_user_subscriptions_outflow(&self, _address: &ManagedAddress){
+    fn get_user_subscriptions_outflow(
+        &self,
+        address: &ManagedAddress,
+    ) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
+        let memberships = self.account_subscriptions_membership_list(&address);
 
+        let mut tokens: ManagedVec<EgldOrEsdtTokenIdentifier> = ManagedVec::new();
+        let mut relative_amounts: ManagedVec<BigUint> = ManagedVec::new();
+
+        for membership_id in memberships.iter() {
+            let subscription = self.subscription_by_id(membership_id).get();
+            let relative_amount = self
+                .get_subscription_amount_agreed_by_parties(subscription.id, &address)
+                / BigUint::from(subscription.frequency);
+
+            let token_index_option = tokens.find(&subscription.token_identifier);
+
+            if token_index_option.is_some() {
+                let token_index = token_index_option.unwrap();
+                let _result = relative_amounts.set(
+                    token_index,
+                    &(relative_amounts.get(token_index).deref().clone() + relative_amount),
+                );
+            } else {
+                tokens.push(subscription.token_identifier);
+                relative_amounts.push(relative_amount);
+            }
+        }
+
+        let mut final_list: MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> =
+            MultiValueEncoded::new();
+        for (token, final_amount) in tokens.iter().zip(relative_amounts.iter()) {
+            final_list.push((token, final_amount.deref().clone()));
+        }
+
+        final_list
     }
 
     /**
      * It returns the subscription token inflow for a given account
      */
     #[view(getUserSubscriptionsInflow)]
-    fn get_user_subscriptions_inflow(&self, address: &ManagedAddress) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
-        let memberships = self.account_subscriptions_membership_list(&address);
-        
+    fn get_user_subscriptions_inflow(
+        &self,
+        address: &ManagedAddress,
+    ) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
+        let user_subscriptions = self.account_subscriptions_created_list(&address);
+
         let mut tokens: ManagedVec<EgldOrEsdtTokenIdentifier> = ManagedVec::new();
-        let mut amounts: ManagedVec<BigUint> = ManagedVec::new();
+        let mut relative_amounts: ManagedVec<BigUint> = ManagedVec::new();
 
-        // memberships = [{EGLD, 1}, {USDC, 15}, {EGLD, 3}]    
-        for membership_id in memberships.iter() {
-            let subscription = self.subscription_by_id(membership_id).get();
-            let token: EgldOrEsdtTokenIdentifier<Self::Api> = subscription.token_identifier;
-            let amount: BigUint = self.get_subscription_amount_agreed_by_parties(subscription.id, &address);
+        for subscription_id in user_subscriptions.iter() {
+            let subscription = self.subscription_by_id(subscription_id).get();
 
-            let token_index_option = tokens.find(&token);
+            // TODO: check if subscription_defined_amount_per_member must be must be used
+
+            let total_members = self
+                .current_subscription_members_list(subscription.id)
+                .len();
+            let relative_amount = BigUint::from(total_members)
+                * self.subscription_amount(subscription.id).get()
+                / BigUint::from(subscription.frequency);
+
+            let token_index_option = tokens.find(&subscription.token_identifier);
 
             if token_index_option.is_some() {
-                // token already exists
                 let token_index = token_index_option.unwrap();
-                let _result = amounts.set(token_index, &(amounts.get(token_index).deref().clone() + amount));
+                let _result = relative_amounts.set(
+                    token_index,
+                    &(relative_amounts.get(token_index).deref().clone() + relative_amount),
+                );
             } else {
-                // first time this token
-                tokens.push(token);
-                amounts.push(amount);
+                tokens.push(subscription.token_identifier);
+                relative_amounts.push(relative_amount);
             }
         }
 
-        let mut final_list: MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> = MultiValueEncoded::new();
-        for (token, final_amount) in tokens.iter().zip(amounts.iter()) {
-            final_list.push((
-                token,
-                final_amount.deref().clone()
-            ));
+        let mut final_list: MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> =
+            MultiValueEncoded::new();
+        for (token, final_amount) in tokens.iter().zip(relative_amounts.iter()) {
+            final_list.push((token, final_amount.deref().clone()));
         }
 
         final_list

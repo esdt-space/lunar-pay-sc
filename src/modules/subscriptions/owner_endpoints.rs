@@ -1,17 +1,18 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::modules::subscriptions::types::{SubscriptionType, Subscription, SubscriptionAmountType};
+use crate::modules::subscriptions::types::{
+    Subscription, SubscriptionAmountType, SubscriptionType,
+};
 
 #[multiversx_sc::module]
 pub trait OwnerEndpoints:
-    crate::modules::protocol::storage::StorageModule +
-    crate::modules::protocol::validation::ValidationModule +
-    crate::modules::agreements::storage::StorageModule +
-
-    crate::modules::subscriptions::events::EventsModule +
-    crate::modules::subscriptions::storage::StorageModule +
-    crate::modules::subscriptions::validation::ValidationModule
+    crate::modules::protocol::storage::StorageModule
+    + crate::modules::protocol::validation::ValidationModule
+    + crate::modules::agreements::storage::StorageModule
+    + crate::modules::subscriptions::events::EventsModule
+    + crate::modules::subscriptions::storage::StorageModule
+    + crate::modules::subscriptions::validation::ValidationModule
 {
     #[endpoint(createSubscription)]
     fn create_subscription(
@@ -20,7 +21,7 @@ pub trait OwnerEndpoints:
         frequency: u64,
         subscription_type: SubscriptionType,
         amount_type: SubscriptionAmountType,
-        amount: Option<BigUint>
+        amount: Option<BigUint>,
     ) {
         let caller = self.blockchain().get_caller();
 
@@ -54,7 +55,7 @@ pub trait OwnerEndpoints:
                     amount_type != SubscriptionAmountType::FixedAmount,
                     "Amount is required for this subscription"
                 )
-            },
+            }
             Some(fixed_amount) => {
                 // Amount should only be sent when the amount type is `FixedAmount`
                 require!(
@@ -83,8 +84,10 @@ pub trait OwnerEndpoints:
 
         let timestamp = self.blockchain().get_block_timestamp();
 
-        self.subscription_member_start_time(id, &address).set(timestamp);
-        self.account_subscriptions_membership_list(&address).insert(id);
+        self.subscription_member_start_time(id, &address)
+            .set(timestamp);
+        self.account_subscriptions_membership_list(&address)
+            .insert(id);
         self.current_subscription_members_list(id).insert(address);
     }
 
@@ -96,18 +99,16 @@ pub trait OwnerEndpoints:
             Some(member) => {
                 self.require_subscription_created_by_account(id, &caller);
                 self.require_subscription_membership(id, &member);
-            },
+            }
             None => {
                 self.require_subscription_not_created_by_account(id, &caller);
                 self.require_subscription_membership(id, &caller);
-            },
+            }
         }
     }
 
     #[inline]
-    fn actual_cancel_membership(&self) {
-
-    }
+    fn actual_cancel_membership(&self) {}
 
     #[inline]
     fn create_identifier(&self) -> u64 {

@@ -5,7 +5,7 @@ multiversx_sc::derive_imports!();
 pub enum SubscriptionAmountType {
     FixedAmount,
     MemberDefinedAmount,
-    OwnerDefinedAmountPerMember
+    OwnerDefinedAmountPerMember,
 }
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi, Clone, Copy, PartialEq, Eq)]
@@ -15,10 +15,10 @@ pub enum SubscriptionType {
 
     /* Can be triggered only for the current cycle */
     TermRestrictedPayoutToSend,
-    TermRestrictedPayoutToReceive
+    TermRestrictedPayoutToReceive,
 }
 
-#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi,  Clone, PartialEq, Eq)]
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi, Clone, PartialEq, Eq)]
 pub struct Subscription<M: ManagedTypeApi> {
     pub id: u64,
     pub owner: ManagedAddress<M>,
@@ -47,10 +47,14 @@ pub struct SubscriptionMultiChargeResult<M: ManagedTypeApi> {
 }
 
 impl<M: ManagedTypeApi> SubscriptionMultiChargeResult<M> {
-    pub fn new(account: &ManagedAddress<M>, success_value: Option<(BigUint<M>, u64)>, fail_value: Option<(BigUint<M>, u64)>) -> Self {
+    pub fn new(
+        account: &ManagedAddress<M>,
+        success_value: Option<(BigUint<M>, u64)>,
+        fail_value: Option<(BigUint<M>, u64)>,
+    ) -> Self {
         SubscriptionMultiChargeResult {
             acccount: account.clone(),
-            data: (success_value, fail_value)
+            data: (success_value, fail_value),
         }
     }
 }
