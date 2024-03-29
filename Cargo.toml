@@ -2,14 +2,14 @@
 name = "lunarpay"
 version = "0.0.1"
 authors = [ "contact@esdt.space",]
-edition = "2018"
+edition = "2021"
 publish = false
 
 [lib]
 path = "src/lib.rs"
 
 [dependencies.multiversx-sc]
-version = "0.43.3"
+version = "0.47.8"
 
 [dev-dependencies.multiversx-sc-scenario]
-version = "0.43.3"
+version = "0.47.8"
