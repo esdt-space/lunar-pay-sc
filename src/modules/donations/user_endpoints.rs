@@ -35,8 +35,7 @@ pub trait UserEndpointsModule:
         receiver: ManagedAddress,
         metadata: Option<ManagedBuffer<Self::Api>>
     ) {
-        let transfer = self.call_value().egld_or_single_esdt();
-        self.donate_with_wallet_balance(receiver, transfer, metadata);
+        self.donate_with_wallet_balance(receiver, metadata);
     }
 
     #[payable("*")]
@@ -46,18 +45,17 @@ pub trait UserEndpointsModule:
         receiver: ManagedAddress,
         metadata: Option<ManagedBuffer<Self::Api>>
     ) {
-        let transfer = self.call_value().egld_or_single_esdt();
-        self.donate_with_wallet_balance(receiver, transfer, metadata);
+        self.donate_with_wallet_balance(receiver, metadata);
     }
 
     #[inline]
     fn donate_with_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        transfer:  EgldOrEsdtTokenPayment<Self::Api>,
         metadata: Option<ManagedBuffer<Self::Api>>
     ) {
         let caller = self.blockchain().get_caller();
+        let transfer = self.call_value().egld_or_single_esdt();
 
         require!(caller != receiver, "Invalid receiver address");
 
