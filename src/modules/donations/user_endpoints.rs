@@ -3,13 +3,15 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait UserEndpointsModule:
-    crate::modules::accounts::storage::StorageModule
-    + crate::modules::accounts::validation::ValidationModule
-    + crate::modules::accounts::balance_utils::BalanceUtilsModule
-    + crate::modules::protocol::storage::StorageModule
-    + crate::modules::protocol::token_utils::TokenUtilsModule
-    + crate::modules::donations::events::EventsModule
-    + crate::modules::transfers::balance_transfer::BalanceTransferModule
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+    crate::modules::accounts::balance_utils::BalanceUtilsModule +
+
+    crate::modules::protocol::storage::StorageModule +
+    crate::modules::protocol::token_utils::TokenUtilsModule +
+
+    crate::modules::donations::events::EventsModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[endpoint(donate)]
     fn donate(
@@ -17,7 +19,7 @@ pub trait UserEndpointsModule:
         token: EgldOrEsdtTokenIdentifier,
         amount: BigUint,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer<Self::Api>>
     ) {
         let caller = self.blockchain().get_caller();
         require!(caller != receiver, "Invalid receiver address");
@@ -26,22 +28,42 @@ pub trait UserEndpointsModule:
         self.donation_event(&caller, &receiver, &token, 0, &amount, metadata);
     }
 
-    #[endpoint(donateWithWalletBalance)]
+    #[payable("EGLD")]
+    #[endpoint(donateWithEgldWalletBalance)]
+    fn donate_with_egld_wallet_balance(
+        &self,
+        receiver: ManagedAddress,
+        metadata: Option<ManagedBuffer<Self::Api>>
+    ) {
+        let transfer = self.call_value().egld_or_single_esdt();
+        self.donate_with_wallet_balance(receiver, transfer, metadata);
+    }
+
+    #[payable("*")]
+    #[endpoint(donateWithEsdtWalletBalance)]
+    fn donate_with_esdt_wallet_balance(
+        &self,
+        receiver: ManagedAddress,
+        metadata: Option<ManagedBuffer<Self::Api>>
+    ) {
+        let transfer = self.call_value().egld_or_single_esdt();
+        self.donate_with_wallet_balance(receiver, transfer, metadata);
+    }
+
+    #[inline]
     fn donate_with_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        transfer:  EgldOrEsdtTokenPayment<Self::Api>,
+        metadata: Option<ManagedBuffer<Self::Api>>
     ) {
         let caller = self.blockchain().get_caller();
-        let transfer = self.call_value().egld_or_single_esdt();
 
         require!(caller != receiver, "Invalid receiver address");
 
-        self.increase_account_token_balance(
-            &receiver,
-            &transfer.token_identifier,
-            &transfer.amount.clone(),
-        );
+        self.increase_account_token_balance(&receiver, &transfer.token_identifier, &transfer.amount.clone());
+        self.donation_event(&caller, &receiver, &transfer.token_identifier, 0, &transfer.amount, metadata);
+
         self.donation_event(
             &caller,
             &receiver,
