@@ -26,7 +26,27 @@ pub trait UserEndpointsModule:
         self.payment_event(&caller, &receiver, &token, 0, &amount, metadata);
     }
 
-    #[endpoint(payWithWalletBalance)]
+    #[payable("EGLD")]
+    #[endpoint(payWithEgldWalletBalance)]
+    fn pay_with_egld_wallet_balance(
+        &self,
+        receiver: ManagedAddress,
+        metadata: Option<ManagedBuffer<Self::Api>>
+    ) {
+        self.pay_with_wallet_balance(receiver, metadata);
+    }
+
+    #[payable("*")]
+    #[endpoint(payWithEsdtWalletBalance)]
+    fn pay_with_esdt_wallet_balance(
+        &self,
+        receiver: ManagedAddress,
+        metadata: Option<ManagedBuffer<Self::Api>>
+    ) {
+        self.pay_with_wallet_balance(receiver, metadata);
+    }
+
+    #[inline]
     fn pay_with_wallet_balance(
         &self,
         receiver: ManagedAddress,
@@ -42,6 +62,7 @@ pub trait UserEndpointsModule:
             &transfer.token_identifier,
             &transfer.amount.clone(),
         );
+
         self.payment_event(
             &caller,
             &receiver,
