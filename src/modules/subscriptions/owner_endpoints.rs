@@ -111,11 +111,19 @@ pub trait OwnerEndpoints:
         };
 
         self.subscription_member_start_time(id, &address).clear();
-        self.account_subscriptions_membership_list(&address).swap_remove(&id);
-        self.current_subscription_members_list(id).swap_remove(&address);
-        self.subscription_member_last_trigger_time(id, &address).clear();
+        self.account_subscriptions_membership_list(&address)
+            .swap_remove(&id);
+        self.current_subscription_members_list(id)
+            .swap_remove(&address);
+        self.subscription_member_last_trigger_time(id, &address)
+            .clear();
 
-        self.cancel_subscription_membership_event(id, &caller, &address, self.blockchain().get_block_timestamp());
+        self.cancel_subscription_membership_event(
+            id,
+            &caller,
+            &address,
+            self.blockchain().get_block_timestamp(),
+        );
     }
 
     #[inline]

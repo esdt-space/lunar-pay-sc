@@ -31,7 +31,7 @@ pub trait UserEndpointsModule:
     fn pay_with_egld_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>
+        metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
         self.pay_with_wallet_balance(receiver, metadata);
     }
@@ -41,7 +41,7 @@ pub trait UserEndpointsModule:
     fn pay_with_esdt_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>
+        metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
         self.pay_with_wallet_balance(receiver, metadata);
     }
