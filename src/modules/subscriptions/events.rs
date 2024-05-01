@@ -54,12 +54,11 @@ pub trait EventsModule {
         &self,
         #[indexed] id: u64,
         #[indexed] member: &ManagedAddress,
-
         #[indexed] timestamp: u64,
         #[indexed] data: SubscriptionChargeData<Self::Api>,
     );
-    #[event("chargeSubscription")]
 
+    #[event("chargeSubscriptionMulti")]
     fn charge_subscription_multi_event(
         &self,
         #[indexed] id: u64,

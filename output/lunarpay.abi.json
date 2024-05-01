@@ -762,7 +762,7 @@
             ]
         },
         {
-            "identifier": "chargeSubscription",
+            "identifier": "chargeSubscriptionMulti",
             "inputs": [
                 {
                     "name": "id",
