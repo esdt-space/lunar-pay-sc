@@ -127,9 +127,6 @@ pub trait OwnerEndpoints:
     }
 
     #[inline]
-    fn actual_cancel_membership(&self) {}
-
-    #[inline]
     fn create_identifier(&self) -> u64 {
         self.last_agreement_id().update(|id| *id += 1);
         self.last_agreement_id().get()
