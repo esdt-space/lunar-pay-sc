@@ -4,8 +4,4 @@
         "RUSTUP_HOME": "${env:HOME}/multiversx-sdk/vendor-rust",
         "CARGO_HOME": "${env:HOME}/multiversx-sdk/vendor-rust"
     },
-    "rust-analyzer.server.extraEnv": {
-        "RUSTUP_HOME": "${env:HOME}/multiversx-sdk/vendor-rust",
-        "CARGO_HOME": "${env:HOME}/multiversx-sdk/vendor-rust"
-    }
 }
