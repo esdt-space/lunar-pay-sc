@@ -65,7 +65,6 @@ pub trait MemberEndpoints:
             .insert(caller.clone());
         self.account_subscriptions_membership_list(&caller)
             .insert(id);
-
         self.subscription_member_start_time(id, &caller)
             .set(timestamp);
 

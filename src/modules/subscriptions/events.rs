@@ -66,6 +66,15 @@ pub trait EventsModule {
         #[indexed] data: MultiValueEncoded<SubscriptionMultiChargeResult<Self::Api>>,
     );
 
+    #[event("cancelSubscriptionMembership")]
+    fn cancel_subscription_membership_event(
+        &self,
+        #[indexed] id: u64,
+        #[indexed] canceled_by: &ManagedAddress,
+        #[indexed] member: &ManagedAddress,
+        #[indexed] created_at: u64,
+    );
+
     // #[event("cancelSubscription")]
     // fn cancel_payment_agreement_event(
     //     &self,

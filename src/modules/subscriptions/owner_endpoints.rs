@@ -94,19 +94,28 @@ pub trait OwnerEndpoints:
     }
 
     #[endpoint(cancelSubscriptionMembership)]
-    fn cancel_subscription_membership(&self, id: u64, address: Option<ManagedAddress>) {
+    fn cancel_subscription_membership(&self, id: u64, opt_address: Option<ManagedAddress>) {
         let caller = self.blockchain().get_caller();
 
-        match address {
+        let address = match opt_address {
             Some(member) => {
                 self.require_subscription_created_by_account(id, &caller);
                 self.require_subscription_membership(id, &member);
+                member
             }
             None => {
                 self.require_subscription_not_created_by_account(id, &caller);
                 self.require_subscription_membership(id, &caller);
+                caller.clone()
             }
-        }
+        };
+
+        self.subscription_member_start_time(id, &address).clear();
+        self.account_subscriptions_membership_list(&address).swap_remove(&id);
+        self.current_subscription_members_list(id).swap_remove(&address);
+        self.subscription_member_last_trigger_time(id, &address).clear();
+
+        self.cancel_subscription_membership_event(id, &caller, &address, self.blockchain().get_block_timestamp());
     }
 
     #[inline]

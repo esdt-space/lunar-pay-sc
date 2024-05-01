@@ -465,7 +465,7 @@
                     "type": "u64"
                 },
                 {
-                    "name": "address",
+                    "name": "opt_address",
                     "type": "Option<Address>"
                 }
             ],
@@ -777,6 +777,31 @@
                 {
                     "name": "data",
                     "type": "variadic<SubscriptionMultiChargeResult>",
+                    "indexed": true
+                }
+            ]
+        },
+        {
+            "identifier": "cancelSubscriptionMembership",
+            "inputs": [
+                {
+                    "name": "id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "canceled_by",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "member",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "created_at",
+                    "type": "u64",
                     "indexed": true
                 }
             ]
