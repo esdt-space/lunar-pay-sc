@@ -435,7 +435,11 @@
                     "type": "Option<BigUint>"
                 }
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
         },
         {
             "name": "addSubscriptionMember",

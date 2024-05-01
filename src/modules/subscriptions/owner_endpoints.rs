@@ -22,7 +22,7 @@ pub trait OwnerEndpoints:
         subscription_type: SubscriptionType,
         amount_type: SubscriptionAmountType,
         amount: Option<BigUint>,
-    ) {
+    ) -> u64 {
         let caller = self.blockchain().get_caller();
 
         self.require_token_is_whitelisted(&token_identifier);
@@ -70,6 +70,8 @@ pub trait OwnerEndpoints:
         }
 
         self.trigger_subscription_created_event(subscription, amount);
+
+        id
     }
 
     #[endpoint(addSubscriptionMember)]
