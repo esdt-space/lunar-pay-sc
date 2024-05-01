@@ -267,8 +267,29 @@
             "outputs": []
         },
         {
-            "name": "payWithWalletBalance",
+            "name": "payWithEgldWalletBalance",
             "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "receiver",
+                    "type": "Address"
+                },
+                {
+                    "name": "metadata",
+                    "type": "Option<bytes>"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "payWithEsdtWalletBalance",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
             "inputs": [
                 {
                     "name": "receiver",
@@ -305,8 +326,29 @@
             "outputs": []
         },
         {
-            "name": "donateWithWalletBalance",
+            "name": "donateWithEgldWalletBalance",
             "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "receiver",
+                    "type": "Address"
+                },
+                {
+                    "name": "metadata",
+                    "type": "Option<bytes>"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "donateWithEsdtWalletBalance",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
             "inputs": [
                 {
                     "name": "receiver",

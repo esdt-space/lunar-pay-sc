@@ -60,7 +60,7 @@ pub trait UserEndpointsModule:
         require!(caller != receiver, "Invalid receiver address");
 
         self.increase_account_token_balance(&receiver, &transfer.token_identifier, &transfer.amount.clone());
-        self.donation_event(&caller, &receiver, &transfer.token_identifier, 0, &transfer.amount, metadata);
+        self.donation_event(&caller, &receiver, &transfer.token_identifier, 0, &transfer.amount, metadata.clone());
 
         self.donation_event(
             &caller,
