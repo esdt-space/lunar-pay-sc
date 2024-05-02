@@ -117,6 +117,8 @@ pub trait OwnerEndpoints:
             .swap_remove(&address);
         self.subscription_member_last_trigger_time(id, &address)
             .clear();
+        self.subscription_defined_amount_per_member(id, &address)
+            .clear();
 
         self.cancel_subscription_membership_event(
             id,

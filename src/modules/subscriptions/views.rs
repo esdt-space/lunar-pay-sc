@@ -13,7 +13,7 @@ pub trait ViewsModule:
     + crate::modules::subscriptions::validation::ValidationModule
 {
     /**
-     * It returns the subscription subscription charge amount information.
+     * It returns the subscription charge amount information.
      * Returns: (pendingChargeAmount, affordableChargeAmount)
      */
     #[view(getUserSubscriptionsChargeAmounts)]
