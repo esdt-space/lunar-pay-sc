@@ -800,7 +800,7 @@
                     "indexed": true
                 },
                 {
-                    "name": "created_at",
+                    "name": "cancelled_at",
                     "type": "u64",
                     "indexed": true
                 }

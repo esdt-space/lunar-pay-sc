@@ -5,14 +5,23 @@ use crate::modules::subscriptions::types::{
     Subscription, SubscriptionAmountType, SubscriptionType,
 };
 
+use super::types::SubscriptionChargeData;
+
 #[multiversx_sc::module]
 pub trait OwnerEndpoints:
     crate::modules::protocol::storage::StorageModule
     + crate::modules::protocol::validation::ValidationModule
     + crate::modules::agreements::storage::StorageModule
+    + crate::modules::subscriptions::amount::AmountModule
     + crate::modules::subscriptions::events::EventsModule
     + crate::modules::subscriptions::storage::StorageModule
     + crate::modules::subscriptions::validation::ValidationModule
+    + crate::modules::accounts::storage::StorageModule
+    + crate::modules::accounts::validation::ValidationModule
+    + crate::modules::subscriptions::cycles::CyclesModule
+    + crate::modules::subscriptions::public_endpoints::PublicEndpoints
+    + crate::modules::accounts::balance_utils::BalanceUtilsModule
+    + crate::modules::transfers::balance_transfer::BalanceTransferModule
 {
     #[endpoint(createSubscription)]
     fn create_subscription(
@@ -97,7 +106,7 @@ pub trait OwnerEndpoints:
     fn cancel_subscription_membership(&self, id: u64, opt_address: Option<ManagedAddress>) {
         let caller = self.blockchain().get_caller();
 
-        let address = match opt_address {
+        let account = match opt_address {
             Some(member) => {
                 self.require_subscription_created_by_account(id, &caller);
                 self.require_subscription_membership(id, &member);
@@ -110,22 +119,51 @@ pub trait OwnerEndpoints:
             }
         };
 
-        self.subscription_member_start_time(id, &address).clear();
-        self.account_subscriptions_membership_list(&address)
-            .swap_remove(&id);
-        self.current_subscription_members_list(id)
-            .swap_remove(&address);
-        self.subscription_member_last_trigger_time(id, &address)
-            .clear();
-        self.subscription_defined_amount_per_member(id, &address)
-            .clear();
+        let subscription = self.subscription_by_id(id).get();
+        let timestamp = self.blockchain().get_block_timestamp();
+        let (successful, failed) = self.trigger_subscription_for_account(&subscription, &account);
 
-        self.cancel_subscription_membership_event(
-            id,
-            &caller,
-            &address,
-            self.blockchain().get_block_timestamp(),
-        );
+        // Charge if affordable
+        if let Some((amount, cycles)) = successful.clone() {
+            self.do_internal_transfer_and_update_balances(
+                &account,
+                &subscription.owner,
+                &subscription.token_identifier,
+                &amount,
+            );
+
+            self.update_subscription_last_trigger_timestamp(&subscription, &account, cycles);
+
+            self.charge_subscription_event(
+                subscription.id,
+                &account,
+                timestamp,
+                SubscriptionChargeData {
+                    successful,
+                    failed: failed.clone(),
+                },
+            );
+        }
+
+        // Cancel only if no failed cycles
+        if failed.is_none() {
+            self.subscription_member_start_time(id, &account).clear();
+            self.account_subscriptions_membership_list(&account)
+                .swap_remove(&id);
+            self.current_subscription_members_list(id)
+                .swap_remove(&account);
+            self.subscription_member_last_trigger_time(id, &account)
+                .clear();
+            self.subscription_defined_amount_per_member(id, &account)
+                .clear();
+
+            self.cancel_subscription_membership_event(
+                id,
+                &caller,
+                &account,
+                self.blockchain().get_block_timestamp(),
+            );
+        }
     }
 
     #[inline]

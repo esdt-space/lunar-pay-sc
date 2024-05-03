@@ -72,7 +72,7 @@ pub trait EventsModule {
         #[indexed] id: u64,
         #[indexed] canceled_by: &ManagedAddress,
         #[indexed] member: &ManagedAddress,
-        #[indexed] created_at: u64,
+        #[indexed] cancelled_at: u64,
     );
 
     // #[event("cancelSubscription")]
