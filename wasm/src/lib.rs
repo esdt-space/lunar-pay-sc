@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           32
+// Endpoints:                           35
 // Async Callback (empty):               1
-// Total number of exported functions:  34
+// Total number of exported functions:  37
 
 #![no_std]
 #![allow(internal_features)]
@@ -44,6 +44,9 @@ multiversx_sc_wasm_adapter::endpoints! {
         donate => donate
         donateWithEgldWalletBalance => donate_with_egld_wallet_balance
         donateWithEsdtWalletBalance => donate_with_esdt_wallet_balance
+        getUserSubscriptionsChargeAmounts => get_subscription_charge_amounts
+        getUserSubscriptionsOutflow => get_user_subscriptions_outflow
+        getUserSubscriptionsInflow => get_user_subscriptions_inflow
         getSubscriptionIds => subscription_ids
         getAccountSubscriptionsCreatedList => account_subscriptions_created_list
         getAccountSubscriptionsMembershipList => account_subscriptions_membership_list

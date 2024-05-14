@@ -40,6 +40,7 @@ pub trait LunarPay:
     modules::donations::user_endpoints::UserEndpointsModule +
 
     // Subscriptions Module
+    modules::subscriptions::views::ViewsModule +
     modules::subscriptions::events::EventsModule +
     modules::subscriptions::amount::AmountModule +
     modules::subscriptions::cycles::CyclesModule +
