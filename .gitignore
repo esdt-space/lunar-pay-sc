@@ -8,3 +8,5 @@ target/
 /*.sh
 /mxpy.json
 /lunar-pay.json
+
+interaction/
