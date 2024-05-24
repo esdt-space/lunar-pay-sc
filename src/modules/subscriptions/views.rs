@@ -16,7 +16,7 @@ pub trait ViewsModule:
      * It returns the subscription charge amount information.
      * Returns: (pendingChargeAmount, affordableChargeAmount)
      */
-    #[view(getUserSubscriptionsChargeAmounts)]
+    #[view(getUserSubscriptionChargeAmounts)]
     fn get_subscription_charge_amounts(&self, id: u64) -> (BigUint, BigUint) {
         let mut pending_amount = BigUint::zero();
         let mut affordable_amount = BigUint::zero();

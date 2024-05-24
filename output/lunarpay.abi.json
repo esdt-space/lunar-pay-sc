@@ -363,7 +363,7 @@
             "docs": [
                 "    * It returns the subscription charge amount information.\\n     * Returns: (pendingChargeAmount, affordableChargeAmount)\\n     "
             ],
-            "name": "getUserSubscriptionsChargeAmounts",
+            "name": "getUserSubscriptionChargeAmounts",
             "mutability": "readonly",
             "inputs": [
                 {

@@ -43,7 +43,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         donate => donate
         donateWithEgldWalletBalance => donate_with_egld_wallet_balance
         donateWithEsdtWalletBalance => donate_with_esdt_wallet_balance
-        getUserSubscriptionsChargeAmounts => get_subscription_charge_amounts
+        getUserSubscriptionChargeAmounts => get_subscription_charge_amounts
         getUserSubscriptionsOutflow => get_user_subscriptions_outflow
         getUserSubscriptionsInflow => get_user_subscriptions_inflow
         getSubscriptionIds => subscription_ids
