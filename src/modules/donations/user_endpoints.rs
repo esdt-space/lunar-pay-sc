@@ -70,14 +70,5 @@ pub trait UserEndpointsModule:
             &transfer.amount,
             metadata.clone(),
         );
-
-        self.donation_event(
-            &caller,
-            &receiver,
-            &transfer.token_identifier,
-            0,
-            &transfer.amount,
-            metadata,
-        );
     }
 }
