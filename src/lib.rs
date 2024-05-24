@@ -53,6 +53,6 @@ pub trait LunarPay:
     #[init]
     fn init(&self) {}
 
-    #[endpoint(upgrade)]
+    #[upgrade]
     fn upgrade(&self) {}
 }
