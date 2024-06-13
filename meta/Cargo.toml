@@ -11,4 +11,4 @@ authors = [ "contact@esdt.space",]
 path = ".."
 
 [dependencies.multiversx-sc-meta]
-version = "0.50.1"
+version = "0.50.3"
