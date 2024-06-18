@@ -317,6 +317,10 @@
                     "type": "Address"
                 },
                 {
+                    "name": "donation_id",
+                    "type": "bytes"
+                },
+                {
                     "name": "metadata",
                     "type": "Option<bytes>"
                 }
@@ -335,6 +339,10 @@
                     "type": "Address"
                 },
                 {
+                    "name": "donation_id",
+                    "type": "bytes"
+                },
+                {
                     "name": "metadata",
                     "type": "Option<bytes>"
                 }
@@ -351,6 +359,10 @@
                 {
                     "name": "receiver",
                     "type": "Address"
+                },
+                {
+                    "name": "donation_id",
+                    "type": "bytes"
                 },
                 {
                     "name": "metadata",
@@ -706,6 +718,11 @@
                 {
                     "name": "amount",
                     "type": "BigUint",
+                    "indexed": true
+                },
+                {
+                    "name": "donation_id",
+                    "type": "bytes",
                     "indexed": true
                 },
                 {

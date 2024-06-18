@@ -17,13 +17,22 @@ pub trait UserEndpointsModule:
         token: EgldOrEsdtTokenIdentifier,
         amount: BigUint,
         receiver: ManagedAddress,
+        donation_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
         let caller = self.blockchain().get_caller();
         require!(caller != receiver, "Invalid receiver address");
 
         self.do_internal_transfer_and_update_balances(&caller, &receiver, &token, &amount);
-        self.donation_event(&caller, &receiver, &token, 0, &amount, metadata);
+        self.donation_event(
+            &caller,
+            &receiver,
+            &token,
+            0,
+            &amount,
+            &donation_id,
+            metadata,
+        );
     }
 
     #[payable("EGLD")]
@@ -31,9 +40,10 @@ pub trait UserEndpointsModule:
     fn donate_with_egld_wallet_balance(
         &self,
         receiver: ManagedAddress,
+        donation_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
-        self.donate_with_wallet_balance(receiver, metadata);
+        self.donate_with_wallet_balance(receiver, donation_id, metadata);
     }
 
     #[payable("*")]
@@ -41,15 +51,17 @@ pub trait UserEndpointsModule:
     fn donate_with_esdt_wallet_balance(
         &self,
         receiver: ManagedAddress,
+        donation_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
-        self.donate_with_wallet_balance(receiver, metadata);
+        self.donate_with_wallet_balance(receiver, donation_id, metadata);
     }
 
     #[inline]
     fn donate_with_wallet_balance(
         &self,
         receiver: ManagedAddress,
+        donation_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
         let caller = self.blockchain().get_caller();
@@ -68,6 +80,7 @@ pub trait UserEndpointsModule:
             &transfer.token_identifier,
             0,
             &transfer.amount,
+            &donation_id,
             metadata.clone(),
         );
     }
