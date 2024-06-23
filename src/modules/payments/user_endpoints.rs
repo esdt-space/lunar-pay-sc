@@ -55,7 +55,7 @@ pub trait UserEndpointsModule:
         self.increase_account_token_balance(
             &receiver,
             &transfer.token_identifier,
-            &transfer.amount.clone(),
+            &transfer.amount,
         );
 
         self.payment_event(

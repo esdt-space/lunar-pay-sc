@@ -25,7 +25,7 @@ pub trait BalanceTransferModule:
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
-        self.decrease_account_token_balance(&sender, &token, &amount.clone());
-        self.increase_account_token_balance(&receiver, &token, &amount.clone());
+        self.decrease_account_token_balance(&sender, &token, &amount);
+        self.increase_account_token_balance(&receiver, &token, &amount);
     }
 }
