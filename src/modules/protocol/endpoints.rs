@@ -31,10 +31,7 @@ pub trait EndpointsModule:
     #[only_owner]
     #[endpoint(whitelistAddress)]
     fn whitelist_address(&self, address: ManagedAddress) {
-        require!(
-            !self.is_address_whitelisted(&address),
-            "This address is already whitelisted"
-        );
+        self.require_address_is_not_whitelisted(&address);
 
         self.whitelisted_addresses().insert(address);
     }
@@ -42,10 +39,7 @@ pub trait EndpointsModule:
     #[only_owner]
     #[endpoint(removeWhitelistedAddress)]
     fn reomve_whitelisted_address(&self, address: &ManagedAddress) {
-        require!(
-            self.is_address_whitelisted(&address),
-            "This address is not whitelisted"
-        );
+        self.require_address_is_whitelisted(address);
 
         self.whitelisted_addresses().swap_remove(address);
     }
