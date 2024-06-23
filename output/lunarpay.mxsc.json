@@ -318,7 +318,7 @@
                         "type": "Address"
                     },
                     {
-                        "name": "donation_id",
+                        "name": "donation_link_id",
                         "type": "bytes"
                     },
                     {
@@ -340,7 +340,7 @@
                         "type": "Address"
                     },
                     {
-                        "name": "donation_id",
+                        "name": "donation_link_id",
                         "type": "bytes"
                     },
                     {
@@ -362,7 +362,7 @@
                         "type": "Address"
                     },
                     {
-                        "name": "donation_id",
+                        "name": "donation_link_id",
                         "type": "bytes"
                     },
                     {
@@ -722,7 +722,7 @@
                         "indexed": true
                     },
                     {
-                        "name": "donation_id",
+                        "name": "donation_link_id",
                         "type": "bytes",
                         "indexed": true
                     },

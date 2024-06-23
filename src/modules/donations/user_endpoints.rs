@@ -17,7 +17,7 @@ pub trait UserEndpointsModule:
         token: EgldOrEsdtTokenIdentifier,
         amount: BigUint,
         receiver: ManagedAddress,
-        donation_id: ManagedBuffer,
+        donation_link_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
         let caller = self.blockchain().get_caller();
@@ -30,7 +30,7 @@ pub trait UserEndpointsModule:
             &token,
             0,
             &amount,
-            &donation_id,
+            &donation_link_id,
             metadata,
         );
     }
@@ -40,10 +40,10 @@ pub trait UserEndpointsModule:
     fn donate_with_egld_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        donation_id: ManagedBuffer,
+        donation_link_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
-        self.donate_with_wallet_balance(receiver, donation_id, metadata);
+        self.donate_with_wallet_balance(receiver, donation_link_id, metadata);
     }
 
     #[payable("*")]
@@ -51,17 +51,17 @@ pub trait UserEndpointsModule:
     fn donate_with_esdt_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        donation_id: ManagedBuffer,
+        donation_link_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
-        self.donate_with_wallet_balance(receiver, donation_id, metadata);
+        self.donate_with_wallet_balance(receiver, donation_link_id, metadata);
     }
 
     #[inline]
     fn donate_with_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        donation_id: ManagedBuffer,
+        donation_link_id: ManagedBuffer,
         metadata: Option<ManagedBuffer<Self::Api>>,
     ) {
         let caller = self.blockchain().get_caller();
@@ -80,7 +80,7 @@ pub trait UserEndpointsModule:
             &transfer.token_identifier,
             0,
             &transfer.amount,
-            &donation_id,
+            &donation_link_id,
             metadata.clone(),
         );
     }
