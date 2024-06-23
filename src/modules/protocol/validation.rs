@@ -11,15 +11,21 @@ pub trait ValidationModule: crate::modules::protocol::storage::StorageModule {
         require!(self.is_token_whitelisted(token), "Token is not whitelisted");
     }
 
-    fn is_address_whitelisted(&self, _address: &ManagedAddress) -> bool {
-        // All addresses are whitelisted for xDay Hackathon
-        true
-        // self.whitelisted_addresses().contains(&address)
+    fn is_address_whitelisted(&self, address: &ManagedAddress) -> bool {
+        self.whitelisted_addresses().contains(&address)
     }
 
-    fn require_address_is_whitelisted(&self, _address: &ManagedAddress) -> bool {
-        // All addresses are whitelisted for xDay Hackathon
-        true
-        // require!(self.is_address_whitelisted(address), "Address is not whitelisted");
+    fn require_address_is_whitelisted(&self, address: &ManagedAddress) {
+        require!(
+            self.is_address_whitelisted(address),
+            "Address is not whitelisted"
+        );
+    }
+
+    fn require_address_is_not_whitelisted(&self, address: &ManagedAddress) {
+        require!(
+            !self.is_address_whitelisted(address),
+            "Address is already whitelisted"
+        );
     }
 }
