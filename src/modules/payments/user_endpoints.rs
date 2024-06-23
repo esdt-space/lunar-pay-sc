@@ -17,7 +17,7 @@ pub trait UserEndpointsModule:
         token: EgldOrEsdtTokenIdentifier,
         amount: BigUint,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         let caller = self.blockchain().get_caller();
         require!(caller != receiver, "Invalid receiver address");
@@ -31,7 +31,7 @@ pub trait UserEndpointsModule:
     fn pay_with_egld_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         self.pay_with_wallet_balance(receiver, metadata);
     }
@@ -41,16 +41,12 @@ pub trait UserEndpointsModule:
     fn pay_with_esdt_wallet_balance(
         &self,
         receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         self.pay_with_wallet_balance(receiver, metadata);
     }
 
-    fn pay_with_wallet_balance(
-        &self,
-        receiver: ManagedAddress,
-        metadata: Option<ManagedBuffer<Self::Api>>,
-    ) {
+    fn pay_with_wallet_balance(&self, receiver: ManagedAddress, metadata: Option<ManagedBuffer>) {
         let caller = self.blockchain().get_caller();
         let transfer = self.call_value().egld_or_single_esdt();
 

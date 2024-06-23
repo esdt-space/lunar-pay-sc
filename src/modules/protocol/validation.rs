@@ -3,15 +3,15 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait ValidationModule: crate::modules::protocol::storage::StorageModule {
-    fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) -> bool {
+    fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier) -> bool {
         self.whitelisted_token_ids().contains(&token)
     }
 
-    fn require_token_is_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) {
+    fn require_token_is_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier) {
         require!(self.is_token_whitelisted(token), "Token is not whitelisted");
     }
 
-    fn is_address_whitelisted(&self, _address: &ManagedAddress<Self::Api>) -> bool {
+    fn is_address_whitelisted(&self, _address: &ManagedAddress) -> bool {
         // All addresses are whitelisted for xDay Hackathon
         true
         // self.whitelisted_addresses().contains(&address)

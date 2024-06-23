@@ -6,7 +6,7 @@ pub trait ValidationModule: crate::modules::accounts::storage::StorageModule {
     fn account_has_sufficient_balance(
         &self,
         account: &ManagedAddress,
-        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
+        token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) -> bool {
         return self.account_balance(&account, &token).get() >= *amount;
@@ -15,7 +15,7 @@ pub trait ValidationModule: crate::modules::accounts::storage::StorageModule {
     fn require_account_has_sufficient_balance(
         &self,
         account: &ManagedAddress,
-        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
+        token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
         require!(

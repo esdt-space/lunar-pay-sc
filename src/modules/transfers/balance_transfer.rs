@@ -9,8 +9,8 @@ pub trait BalanceTransferModule:
 {
     fn do_transfer_and_update_balance(
         &self,
-        sender: &ManagedAddress<Self::Api>,
-        receiver: &ManagedAddress<Self::Api>,
+        sender: &ManagedAddress,
+        receiver: &ManagedAddress,
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
@@ -22,8 +22,8 @@ pub trait BalanceTransferModule:
 
     fn do_internal_transfer_and_update_balances(
         &self,
-        sender: &ManagedAddress<Self::Api>,
-        receiver: &ManagedAddress<Self::Api>,
+        sender: &ManagedAddress,
+        receiver: &ManagedAddress,
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {

@@ -6,7 +6,7 @@ pub trait BalanceUtilsModule: crate::modules::accounts::storage::StorageModule {
     fn increase_account_token_balance(
         &self,
         account: &ManagedAddress,
-        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
+        token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
         self.account_balance(account, token)
@@ -16,7 +16,7 @@ pub trait BalanceUtilsModule: crate::modules::accounts::storage::StorageModule {
     fn decrease_account_token_balance(
         &self,
         account: &ManagedAddress,
-        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
+        token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
         self.account_balance(account, token)

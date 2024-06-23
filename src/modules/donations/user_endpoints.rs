@@ -18,7 +18,7 @@ pub trait UserEndpointsModule:
         amount: BigUint,
         receiver: ManagedAddress,
         donation_link_id: ManagedBuffer,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         let caller = self.blockchain().get_caller();
         require!(caller != receiver, "Invalid receiver address");
@@ -41,7 +41,7 @@ pub trait UserEndpointsModule:
         &self,
         receiver: ManagedAddress,
         donation_link_id: ManagedBuffer,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         self.donate_with_wallet_balance(receiver, donation_link_id, metadata);
     }
@@ -52,7 +52,7 @@ pub trait UserEndpointsModule:
         &self,
         receiver: ManagedAddress,
         donation_link_id: ManagedBuffer,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         self.donate_with_wallet_balance(receiver, donation_link_id, metadata);
     }
@@ -61,7 +61,7 @@ pub trait UserEndpointsModule:
         &self,
         receiver: ManagedAddress,
         donation_link_id: ManagedBuffer,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        metadata: Option<ManagedBuffer>,
     ) {
         let caller = self.blockchain().get_caller();
         let transfer = self.call_value().egld_or_single_esdt();

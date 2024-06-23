@@ -5,7 +5,7 @@ multiversx_sc::derive_imports!();
 pub trait StorageModule {
     /// Stores the accounts
     #[storage_mapper("accounts")]
-    fn accounts(&self) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    fn accounts(&self) -> UnorderedSetMapper<ManagedAddress>;
 
     /// Stores the total account balance for each token identifier
     #[storage_mapper("account_balance")]
@@ -13,5 +13,5 @@ pub trait StorageModule {
         &self,
         address: &ManagedAddress,
         token: &EgldOrEsdtTokenIdentifier,
-    ) -> SingleValueMapper<BigUint<Self::Api>>;
+    ) -> SingleValueMapper<BigUint>;
 }

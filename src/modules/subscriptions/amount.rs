@@ -14,7 +14,7 @@ pub trait AmountModule:
     fn get_subscription_amount_agreed_by_parties(
         &self,
         id: u64,
-        address: &ManagedAddress<Self::Api>,
+        address: &ManagedAddress,
     ) -> BigUint {
         let fixed_amount = self.subscription_amount(id);
 

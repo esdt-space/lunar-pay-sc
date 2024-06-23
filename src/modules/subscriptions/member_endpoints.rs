@@ -20,8 +20,8 @@ pub trait MemberEndpoints:
     fn create_subscription_membership(
         &self,
         id: u64,
-        amount: Option<BigUint<Self::Api>>,
-        metadata: Option<ManagedBuffer<Self::Api>>,
+        amount: Option<BigUint>,
+        metadata: Option<ManagedBuffer>,
     ) {
         self.require_existing_subscription(id);
         let caller = self.blockchain().get_caller();

@@ -86,7 +86,7 @@ pub trait EventsModule {
     // fn charge_subscription_event(
     //     &self,
     //     #[indexed] agreement_id: u64,
-    //     #[indexed] accounts: ManagedVec<ManagedAddress<Self::Api>>,
+    //     #[indexed] accounts: ManagedVec<ManagedAddress>,
     //     #[indexed] amounts: ManagedVec<BigUint>,
     //     #[indexed] cycles: ManagedVec<u64>,
     // );

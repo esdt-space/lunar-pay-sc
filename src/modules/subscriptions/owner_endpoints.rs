@@ -26,7 +26,7 @@ pub trait OwnerEndpoints:
     #[endpoint(createSubscription)]
     fn create_subscription(
         &self,
-        token_identifier: EgldOrEsdtTokenIdentifier<Self::Api>,
+        token_identifier: EgldOrEsdtTokenIdentifier,
         frequency: u64,
         subscription_type: SubscriptionType,
         amount_type: SubscriptionAmountType,

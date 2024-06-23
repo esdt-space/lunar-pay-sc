@@ -8,7 +8,7 @@ pub trait EndpointsModule:
 {
     #[only_owner]
     #[endpoint(whitelistToken)]
-    fn whitelist_token(&self, token: EgldOrEsdtTokenIdentifier<Self::Api>) {
+    fn whitelist_token(&self, token: EgldOrEsdtTokenIdentifier) {
         require!(
             !self.is_token_whitelisted(&token),
             "This token is already whitelisted"
@@ -19,7 +19,7 @@ pub trait EndpointsModule:
 
     #[only_owner]
     #[endpoint(removeWhitelistedToken)]
-    fn remove_whitelisted_token(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) {
+    fn remove_whitelisted_token(&self, token: &EgldOrEsdtTokenIdentifier) {
         require!(
             self.is_token_whitelisted(&token),
             "This token is not whitelisted"
@@ -30,7 +30,7 @@ pub trait EndpointsModule:
 
     #[only_owner]
     #[endpoint(whitelistAddress)]
-    fn whitelist_address(&self, address: ManagedAddress<Self::Api>) {
+    fn whitelist_address(&self, address: ManagedAddress) {
         require!(
             !self.is_address_whitelisted(&address),
             "This address is already whitelisted"
@@ -41,7 +41,7 @@ pub trait EndpointsModule:
 
     #[only_owner]
     #[endpoint(removeWhitelistedAddress)]
-    fn reomve_whitelisted_address(&self, address: &ManagedAddress<Self::Api>) {
+    fn reomve_whitelisted_address(&self, address: &ManagedAddress) {
         require!(
             self.is_address_whitelisted(&address),
             "This address is not whitelisted"

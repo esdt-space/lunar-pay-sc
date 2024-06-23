@@ -14,16 +14,16 @@ pub trait StorageModule {
     /// Stores the current whitelisted token identifiers
     #[view(getWhitelistedTokenIds)]
     #[storage_mapper("whitelisted_token_ids")]
-    fn whitelisted_token_ids(&self) -> UnorderedSetMapper<EgldOrEsdtTokenIdentifier<Self::Api>>;
+    fn whitelisted_token_ids(&self) -> UnorderedSetMapper<EgldOrEsdtTokenIdentifier>;
 
     /// Stores the used token identifiers
     /// A token might get removed from the whitelist but the account might still have balance
     #[view(getUsedTokenIds)]
     #[storage_mapper("used_token_ids")]
-    fn used_token_ids(&self) -> UnorderedSetMapper<EgldOrEsdtTokenIdentifier<Self::Api>>;
+    fn used_token_ids(&self) -> UnorderedSetMapper<EgldOrEsdtTokenIdentifier>;
 
     /// Stores the addresses that are allowed to create agreements
     #[view(getWhitelistedAddresses)]
     #[storage_mapper("whitelisted_addresses")]
-    fn whitelisted_addresses(&self) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    fn whitelisted_addresses(&self) -> UnorderedSetMapper<ManagedAddress>;
 }

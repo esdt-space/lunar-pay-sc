@@ -15,10 +15,7 @@ pub trait StorageModule {
 
     /// Stores the current members for a subscription.
     #[storage_mapper("current_subscription_members_list")]
-    fn current_subscription_members_list(
-        &self,
-        id: u64,
-    ) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    fn current_subscription_members_list(&self, id: u64) -> UnorderedSetMapper<ManagedAddress>;
 
     /// Stores the time when an account was added to a subscription
     #[storage_mapper("subscription_member_start_time")]
