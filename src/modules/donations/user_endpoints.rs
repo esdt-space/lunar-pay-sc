@@ -31,7 +31,7 @@ pub trait UserEndpointsModule:
             0,
             &amount,
             &donation_link_id,
-            metadata,
+            &metadata,
         );
     }
 
@@ -73,6 +73,7 @@ pub trait UserEndpointsModule:
             &transfer.token_identifier,
             &transfer.amount.clone(),
         );
+
         self.donation_event(
             &caller,
             &receiver,
@@ -80,7 +81,7 @@ pub trait UserEndpointsModule:
             0,
             &transfer.amount,
             &donation_link_id,
-            metadata.clone(),
+            &metadata,
         );
     }
 }
