@@ -4,8 +4,6 @@ multiversx_sc::derive_imports!();
 #[multiversx_sc::module]
 pub trait TokenUtilsModule: crate::modules::protocol::storage::StorageModule {
     fn register_token(&self, token: &EgldOrEsdtTokenIdentifier) {
-        if !self.used_token_ids().contains(&token) {
-            self.used_token_ids().insert(token.clone());
-        }
+        self.used_token_ids().insert(token.clone());
     }
 }
