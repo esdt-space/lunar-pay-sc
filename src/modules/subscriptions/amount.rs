@@ -26,10 +26,8 @@ pub trait AmountModule:
             .get()
     }
 
-    /**
-     * It returns the amount an user has to pay for the subscription and the amount the user can afford to pay
-     * Returns (pendingAmount, affordableAmount)
-     */
+    /// It returns the amount an user has to pay for the subscription and the amount the user can afford to pay
+    /// Returns (pendingAmount, affordableAmount)
     fn get_subscription_charge_amounts_for_account(
         &self,
         subscription: &Subscription<Self::Api>,

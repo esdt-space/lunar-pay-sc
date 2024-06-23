@@ -12,10 +12,8 @@ pub trait ViewsModule:
     + crate::modules::subscriptions::storage::StorageModule
     + crate::modules::subscriptions::validation::ValidationModule
 {
-    /**
-     * It returns the subscription charge amount information.
-     * Returns: (pendingChargeAmount, affordableChargeAmount)
-     */
+    /// It returns the subscription charge amount information.
+    /// Returns: (pendingChargeAmount, affordableChargeAmount)
     #[view(getUserSubscriptionChargeAmounts)]
     fn get_subscription_charge_amounts(&self, id: u64) -> (BigUint, BigUint) {
         let mut pending_amount = BigUint::zero();
@@ -35,9 +33,7 @@ pub trait ViewsModule:
         (pending_amount, affordable_amount)
     }
 
-    /**
-     * It returns the subscription token outflow for a given account
-     */
+    /// It returns the subscription token outflow for a given account
     #[view(getUserSubscriptionsOutflow)]
     fn get_user_subscriptions_outflow(
         &self,
@@ -77,9 +73,7 @@ pub trait ViewsModule:
         final_list
     }
 
-    /**
-     * It returns the subscription token inflow for a given account
-     */
+    /// It returns the subscription token inflow for a given account
     #[view(getUserSubscriptionsInflow)]
     fn get_user_subscriptions_inflow(
         &self,

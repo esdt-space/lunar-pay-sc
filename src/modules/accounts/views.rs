@@ -5,9 +5,7 @@ multiversx_sc::derive_imports!();
 pub trait ViewsModule:
     crate::modules::protocol::storage::StorageModule + crate::modules::accounts::storage::StorageModule
 {
-    /**
-     * It returns the total account balances
-     */
+    /// It returns the total account balances
     #[view(getAccountBalances)]
     fn get_account_balances(
         &self,

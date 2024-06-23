@@ -49,7 +49,7 @@ pub trait ValidationModule: crate::modules::subscriptions::storage::StorageModul
         );
     }
 
-    /* The user can create membership only for RecurringPayoutToReceive and TermRestrictedPayoutToReceive subscription types */
+    // The user can create membership only for RecurringPayoutToReceive and TermRestrictedPayoutToReceive subscription types
     fn can_account_create_membership_for_subscription_type(
         &self,
         subscription_type: SubscriptionType,
@@ -71,7 +71,7 @@ pub trait ValidationModule: crate::modules::subscriptions::storage::StorageModul
         );
     }
 
-    /* The owner can add members only for RecurringPayoutToSend and TermRestrictedPayoutToSend subscription types */
+    // The owner can add members only for RecurringPayoutToSend and TermRestrictedPayoutToSend subscription types
     fn can_owner_add_member_for_subscription_type(
         &self,
         subscription_type: SubscriptionType,

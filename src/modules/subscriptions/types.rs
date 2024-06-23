@@ -12,8 +12,7 @@ pub enum SubscriptionAmountType {
 pub enum SubscriptionType {
     RecurringPayoutToSend,
     RecurringPayoutToReceive,
-
-    /* Can be triggered only for the current cycle */
+    /// Can be triggered only for the current cycle
     TermRestrictedPayoutToSend,
     TermRestrictedPayoutToReceive,
 }

@@ -15,9 +15,7 @@ pub trait MemberEndpoints:
     + crate::modules::subscriptions::storage::StorageModule
     + crate::modules::subscriptions::validation::ValidationModule
 {
-    /**
-     * Subscribe to a subscription
-     */
+    /// Subscribe to a subscription
     #[endpoint(createSubscriptionMembership)]
     fn create_subscription_membership(
         &self,
