@@ -27,7 +27,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         whitelistToken => whitelist_token
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
-        removeWhitelistedAddress => reomve_whitelisted_address
+        removeWhitelistedAddress => remove_whitelisted_address
         setAdmin => set_admin
         removeAdmin => remove_admin
         getAccountBalances => get_account_balances

@@ -38,7 +38,7 @@ pub trait EndpointsModule:
 
     #[only_owner]
     #[endpoint(removeWhitelistedAddress)]
-    fn reomve_whitelisted_address(&self, address: &ManagedAddress) {
+    fn remove_whitelisted_address(&self, address: &ManagedAddress) {
         self.require_address_is_whitelisted(address);
 
         self.whitelisted_addresses().swap_remove(address);
