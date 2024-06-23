@@ -72,7 +72,6 @@ pub trait MemberEndpoints:
         self.create_subscription_membership_event(id, &caller, timestamp, metadata);
     }
 
-    #[inline]
     fn charge_initial_subscription_cycle(
         &self,
         subscription: Subscription<Self::Api>,

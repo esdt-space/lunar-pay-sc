@@ -57,7 +57,6 @@ pub trait UserEndpointsModule:
         self.donate_with_wallet_balance(receiver, donation_link_id, metadata);
     }
 
-    #[inline]
     fn donate_with_wallet_balance(
         &self,
         receiver: ManagedAddress,

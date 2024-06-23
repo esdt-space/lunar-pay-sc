@@ -46,7 +46,6 @@ pub trait UserEndpointsModule:
         self.pay_with_wallet_balance(receiver, metadata);
     }
 
-    #[inline]
     fn pay_with_wallet_balance(
         &self,
         receiver: ManagedAddress,

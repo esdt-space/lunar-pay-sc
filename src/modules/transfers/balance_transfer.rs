@@ -7,7 +7,6 @@ pub trait BalanceTransferModule:
     + crate::modules::accounts::validation::ValidationModule
     + crate::modules::accounts::balance_utils::BalanceUtilsModule
 {
-    #[inline]
     fn do_transfer_and_update_balance(
         &self,
         sender: &ManagedAddress<Self::Api>,
@@ -21,7 +20,6 @@ pub trait BalanceTransferModule:
         self.send().direct(&receiver, &token, 0, &amount.clone());
     }
 
-    #[inline]
     fn do_internal_transfer_and_update_balances(
         &self,
         sender: &ManagedAddress<Self::Api>,
