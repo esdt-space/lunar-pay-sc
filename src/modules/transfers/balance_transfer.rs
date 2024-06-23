@@ -14,8 +14,6 @@ pub trait BalanceTransferModule:
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
-        self.require_account_has_sufficient_balance(&sender, &token, &amount.clone());
-
         self.decrease_account_token_balance(&sender, &token, &amount.clone());
         self.send().direct(&receiver, &token, 0, &amount.clone());
     }
@@ -27,8 +25,6 @@ pub trait BalanceTransferModule:
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
-        self.require_account_has_sufficient_balance(&sender, &token, &amount.clone());
-
         self.decrease_account_token_balance(&sender, &token, &amount.clone());
         self.increase_account_token_balance(&receiver, &token, &amount.clone());
     }
