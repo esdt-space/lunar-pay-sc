@@ -10,7 +10,7 @@ pub trait UserEndpointsModule:
     + crate::modules::transfers::balance_transfer::BalanceTransferModule
 {
     #[endpoint(transferTokens)]
-    fn transfer(
+    fn transfer_tokens(
         &self,
         token: EgldOrEsdtTokenIdentifier,
         amount: BigUint,

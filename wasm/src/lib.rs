@@ -36,7 +36,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         depositEsdt => deposit_esdt
         withdrawEsdt => withdraw_esdt
         getLastAgreementId => last_agreement_id
-        transferTokens => transfer
+        transferTokens => transfer_tokens
         pay => pay
         payWithEgldWalletBalance => pay_with_egld_wallet_balance
         payWithEsdtWalletBalance => pay_with_esdt_wallet_balance
