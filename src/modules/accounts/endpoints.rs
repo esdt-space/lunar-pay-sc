@@ -19,10 +19,7 @@ pub trait EndpointsModule:
         let token = EgldOrEsdtTokenIdentifier::egld();
         let payment_value = self.call_value().egld_value().clone_value();
 
-        require!(
-            self.is_token_whitelisted(&token),
-            "Token is not whitelisted"
-        );
+        self.require_token_is_whitelisted(&token);
 
         self.register_token(&token);
 
@@ -48,10 +45,7 @@ pub trait EndpointsModule:
         let amount = transfer.amount;
         let token = EgldOrEsdtTokenIdentifier::esdt(transfer.token_identifier);
 
-        require!(
-            self.is_token_whitelisted(&token),
-            "Token is not whitelisted"
-        );
+        self.require_token_is_whitelisted(&token);
 
         self.register_token(&token);
 

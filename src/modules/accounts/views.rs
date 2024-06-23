@@ -11,7 +11,8 @@ pub trait ViewsModule:
         &self,
         address: &ManagedAddress,
     ) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
-        let mut items_vec = MultiValueEncoded::new();
+        let mut items_vec: MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> =
+            MultiValueEncoded::new();
 
         for token in self.used_token_ids().iter() {
             let account_balance = self.account_balance(address, &token);
