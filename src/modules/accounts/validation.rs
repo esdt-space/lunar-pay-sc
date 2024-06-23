@@ -9,7 +9,7 @@ pub trait ValidationModule: crate::modules::accounts::storage::StorageModule {
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) -> bool {
-        return self.account_balance(&account, &token).get() >= *amount;
+        return &self.account_balance(&account, &token).get() >= amount;
     }
 
     fn require_account_has_sufficient_balance(
