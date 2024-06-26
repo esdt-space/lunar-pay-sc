@@ -36,12 +36,12 @@ pub trait OwnerEndpoints:
 
         self.require_token_is_whitelisted(&token_identifier);
 
-        let id = self.create_identifier();
+        let id = self.create_agreement_id();
         let timestamp = self.blockchain().get_block_timestamp();
 
         // Create the subscription object
         let subscription = Subscription {
-            id: id.clone(),
+            id: id,
             owner: caller.clone(),
             time_created: timestamp,
 
@@ -166,7 +166,7 @@ pub trait OwnerEndpoints:
         }
     }
 
-    fn create_identifier(&self) -> u64 {
+    fn create_agreement_id(&self) -> u64 {
         let id = self.last_agreement_id().get();
         self.last_agreement_id().set(id + 1);
 
