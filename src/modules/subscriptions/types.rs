@@ -41,7 +41,7 @@ pub struct SubscriptionChargeData<M: ManagedTypeApi> {
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi, Clone, PartialEq, Eq)]
 pub struct SubscriptionMultiChargeResult<M: ManagedTypeApi> {
-    pub acccount: ManagedAddress<M>,
+    pub account: ManagedAddress<M>,
     pub data: (Option<(BigUint<M>, u64)>, Option<(BigUint<M>, u64)>),
 }
 
@@ -52,7 +52,7 @@ impl<M: ManagedTypeApi> SubscriptionMultiChargeResult<M> {
         fail_value: Option<(BigUint<M>, u64)>,
     ) -> Self {
         SubscriptionMultiChargeResult {
-            acccount: account.clone(),
+            account: account.clone(),
             data: (success_value, fail_value),
         }
     }

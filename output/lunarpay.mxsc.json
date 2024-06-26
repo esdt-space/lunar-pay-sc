@@ -927,7 +927,7 @@
                 "type": "struct",
                 "fields": [
                     {
-                        "name": "acccount",
+                        "name": "account",
                         "type": "Address"
                     },
                     {
