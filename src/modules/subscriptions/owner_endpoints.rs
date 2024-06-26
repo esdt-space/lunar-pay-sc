@@ -167,7 +167,9 @@ pub trait OwnerEndpoints:
     }
 
     fn create_identifier(&self) -> u64 {
-        self.last_agreement_id().update(|id| *id += 1);
-        self.last_agreement_id().get()
+        let id = self.last_agreement_id().get();
+        self.last_agreement_id().set(id + 1);
+
+        id + 1
     }
 }
