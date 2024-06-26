@@ -33,7 +33,7 @@ pub trait CyclesModule: crate::modules::subscriptions::storage::StorageModule {
 
         (timestamp - last_trigger_timestamp)
             .checked_div(frequency)
-            .unwrap()
+            .unwrap_or(0)
     }
 
     /// Calculates the number of cycles that a user can afford.
