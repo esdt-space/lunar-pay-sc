@@ -102,12 +102,12 @@ pub trait ValidationModule: crate::modules::subscriptions::storage::StorageModul
 
     fn require_subscription_publicly_triggerable(&self, subscription_type: SubscriptionType) {
         require!(
-            self.is_subscription_pulicly_triggerable(subscription_type),
+            self.is_subscription_publicly_triggerable(subscription_type),
             "You cannot trigger this subscription."
         );
     }
 
-    fn is_subscription_pulicly_triggerable(&self, subscription_type: SubscriptionType) -> bool {
+    fn is_subscription_publicly_triggerable(&self, subscription_type: SubscriptionType) -> bool {
         subscription_type == SubscriptionType::RecurringPayoutToReceive
             || subscription_type == SubscriptionType::TermRestrictedPayoutToReceive
     }
