@@ -43,6 +43,8 @@ pub trait CyclesModule: crate::modules::subscriptions::storage::StorageModule {
         amount_per_cycle: &BigUint,
         pending_cycles: u64,
     ) -> u64 {
+        require!(amount_per_cycle > &0, "Invalid amount per cycle (division by zero).");
+
         // Determine how many cycles the user can afford
         let affordable_cycles = (amount_available / amount_per_cycle).to_u64().unwrap_or(0);
 
