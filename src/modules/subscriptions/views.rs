@@ -87,8 +87,6 @@ pub trait ViewsModule:
         for subscription_id in user_subscriptions.iter() {
             let subscription = self.subscription_by_id(subscription_id).get();
 
-            // TODO: should subscription_defined_amount_per_member be checked for each member of the subscription?
-
             let total_members = self
                 .current_subscription_members_list(subscription.id)
                 .len();
