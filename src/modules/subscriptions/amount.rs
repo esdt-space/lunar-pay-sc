@@ -51,7 +51,7 @@ pub trait AmountModule:
         );
 
         (
-            cycle_cost.clone() * total_pending_cycles,
+            &cycle_cost * total_pending_cycles,
             cycle_cost * affordable_cycles,
         )
     }
