@@ -14,7 +14,7 @@ pub trait AmountModule:
     fn get_subscription_amount_agreed_by_parties(
         &self,
         id: u64,
-        address: &ManagedAddress,
+        address: ManagedAddress,
     ) -> BigUint {
         let fixed_amount = self.subscription_amount(id);
 
@@ -22,7 +22,7 @@ pub trait AmountModule:
             return fixed_amount.get();
         }
 
-        self.subscription_defined_amount_per_member(id, address)
+        self.subscription_defined_amount_per_member(id, &address)
             .get()
     }
 
@@ -31,10 +31,10 @@ pub trait AmountModule:
     fn get_subscription_charge_amounts_for_account(
         &self,
         subscription: &Subscription<Self::Api>,
-        account: &ManagedAddress,
+        account: ManagedAddress,
     ) -> (BigUint, BigUint) {
         let total_pending_cycles =
-            self.get_pending_cycles_count(subscription.id, subscription.frequency, &account);
+            self.get_pending_cycles_count(subscription.id, subscription.frequency, account.clone());
 
         if total_pending_cycles == 0 {
             return (BigUint::zero(), BigUint::zero());
@@ -43,7 +43,7 @@ pub trait AmountModule:
         let user_balance = self
             .account_balance(&account, &subscription.token_identifier)
             .get();
-        let cycle_cost = self.get_subscription_amount_agreed_by_parties(subscription.id, &account);
+        let cycle_cost = self.get_subscription_amount_agreed_by_parties(subscription.id, account);
         let affordable_cycles = self.get_number_of_cycles_that_can_be_charged(
             &user_balance,
             &cycle_cost,

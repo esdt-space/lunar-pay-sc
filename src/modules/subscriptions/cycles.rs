@@ -6,8 +6,8 @@ multiversx_sc::derive_imports!();
 #[multiversx_sc::module]
 pub trait CyclesModule: crate::modules::subscriptions::storage::StorageModule {
     /// Fetches the last timestamp when a cycle was triggered for a given agreement and account.
-    fn last_triggered_timestamp(&self, id: u64, address: &ManagedAddress) -> u64 {
-        self.subscription_member_last_trigger_time(id, address)
+    fn last_triggered_timestamp(&self, id: u64, address: ManagedAddress) -> u64 {
+        self.subscription_member_last_trigger_time(id, &address)
             .get()
     }
 
@@ -26,7 +26,7 @@ pub trait CyclesModule: crate::modules::subscriptions::storage::StorageModule {
         &self,
         agreement_id: u64,
         frequency: u64,
-        account: &ManagedAddress,
+        account: ManagedAddress,
     ) -> u64 {
         let timestamp = self.blockchain().get_block_timestamp();
         let last_trigger_timestamp = self.last_triggered_timestamp(agreement_id, account);
@@ -61,7 +61,7 @@ pub trait CyclesModule: crate::modules::subscriptions::storage::StorageModule {
         cycles: u64,
     ) {
         let last_triggered_cycle_timestamp = self
-            .subscription_member_last_trigger_time(subscription.id, &account)
+            .subscription_member_last_trigger_time(subscription.id, account)
             .get();
         let end_cycle_timestamp = self.get_timestamp_at_end_of_cycles(
             last_triggered_cycle_timestamp,
@@ -69,7 +69,7 @@ pub trait CyclesModule: crate::modules::subscriptions::storage::StorageModule {
             cycles,
         );
 
-        self.subscription_member_last_trigger_time(subscription.id, &account)
+        self.subscription_member_last_trigger_time(subscription.id, account)
             .set(end_cycle_timestamp);
     }
 }

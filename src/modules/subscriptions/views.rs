@@ -15,7 +15,11 @@ pub trait ViewsModule:
     /// It returns the subscription charge amount information.
     /// Returns: (pendingChargeAmount, affordableChargeAmount)
     #[view(getSubscriptionChargeAmounts)]
-    fn get_subscription_charge_amounts(&self, id: u64, opt_address: OptionalValue<ManagedAddress>) -> (BigUint, BigUint) {
+    fn get_subscription_charge_amounts(
+        &self,
+        id: u64,
+        opt_address: OptionalValue<ManagedAddress>,
+    ) -> (BigUint, BigUint) {
         let mut pending_amount = BigUint::zero();
         let mut affordable_amount = BigUint::zero();
 
@@ -25,7 +29,7 @@ pub trait ViewsModule:
             let address = opt_address.into_option().unwrap();
 
             let (account_pending_amount, account_affordable_amount) =
-                self.get_subscription_charge_amounts_for_account(&subscription, &address);
+                self.get_subscription_charge_amounts_for_account(&subscription, address);
 
             return (account_pending_amount, account_affordable_amount);
         }
@@ -34,7 +38,7 @@ pub trait ViewsModule:
 
         for account in members.iter() {
             let (account_pending_amount, account_affordable_amount) =
-                self.get_subscription_charge_amounts_for_account(&subscription, &account);
+                self.get_subscription_charge_amounts_for_account(&subscription, account);
 
             pending_amount += account_pending_amount;
             affordable_amount += account_affordable_amount;
@@ -49,7 +53,7 @@ pub trait ViewsModule:
         &self,
         address: &ManagedAddress,
     ) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
-        let memberships = self.account_subscriptions_membership_list(&address);
+        let memberships = self.account_subscriptions_membership_list(address);
 
         let mut tokens: ManagedVec<EgldOrEsdtTokenIdentifier> = ManagedVec::new();
         let mut final_amounts: ManagedVec<BigUint> = ManagedVec::new();
@@ -57,7 +61,10 @@ pub trait ViewsModule:
         for membership_id in memberships.iter() {
             let subscription = self.subscription_by_id(membership_id).get();
 
-            let (pending_amount, _affordable_amount) = self.get_subscription_charge_amounts(membership_id, OptionalValue::Some(address.clone()));
+            let (pending_amount, _affordable_amount) = self.get_subscription_charge_amounts(
+                membership_id,
+                OptionalValue::Some(address.clone()),
+            );
 
             if pending_amount == BigUint::zero() {
                 continue;
@@ -92,7 +99,7 @@ pub trait ViewsModule:
         &self,
         address: &ManagedAddress,
     ) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
-        let user_subscriptions = self.account_subscriptions_created_list(&address);
+        let user_subscriptions = self.account_subscriptions_created_list(address);
 
         let mut tokens: ManagedVec<EgldOrEsdtTokenIdentifier> = ManagedVec::new();
         let mut final_amounts: ManagedVec<BigUint> = ManagedVec::new();
@@ -100,7 +107,8 @@ pub trait ViewsModule:
         for subscription_id in user_subscriptions.iter() {
             let subscription = self.subscription_by_id(subscription_id).get();
 
-            let (pending_amount, _affordable_amount) = self.get_subscription_charge_amounts(subscription_id, OptionalValue::None);
+            let (pending_amount, _affordable_amount) =
+                self.get_subscription_charge_amounts(subscription_id, OptionalValue::None);
 
             if pending_amount == BigUint::zero() {
                 continue;

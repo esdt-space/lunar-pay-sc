@@ -54,11 +54,11 @@ pub trait ValidationModule: crate::modules::subscriptions::storage::StorageModul
         &self,
         subscription_type: SubscriptionType,
     ) -> bool {
-        match subscription_type {
-            SubscriptionType::RecurringPayoutToReceive => true,
-            SubscriptionType::TermRestrictedPayoutToReceive => true,
-            _ => false,
-        }
+        matches!(
+            subscription_type,
+            SubscriptionType::RecurringPayoutToReceive
+                | SubscriptionType::TermRestrictedPayoutToReceive
+        )
     }
 
     fn require_account_can_create_membership_for_subscription_type(
@@ -76,11 +76,10 @@ pub trait ValidationModule: crate::modules::subscriptions::storage::StorageModul
         &self,
         subscription_type: SubscriptionType,
     ) -> bool {
-        match subscription_type {
-            SubscriptionType::RecurringPayoutToSend => true,
-            SubscriptionType::TermRestrictedPayoutToSend => true,
-            _ => false,
-        }
+        matches!(
+            subscription_type,
+            SubscriptionType::RecurringPayoutToSend | SubscriptionType::TermRestrictedPayoutToSend
+        )
     }
 
     fn require_owner_can_add_member_for_subscription_type(

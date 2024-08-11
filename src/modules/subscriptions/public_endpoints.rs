@@ -31,7 +31,7 @@ pub trait PublicEndpoints:
 
         for account in members.iter() {
             let (successful, failed) =
-                self.trigger_subscription_for_account(&subscription, &account);
+                self.trigger_subscription_for_account(&subscription, account.clone());
 
             if let Some((amount, cycles)) = successful.clone() {
                 self.do_internal_transfer_and_update_balances(
@@ -57,17 +57,18 @@ pub trait PublicEndpoints:
     fn trigger_subscription_for_account(
         &self,
         subscription: &Subscription<Self::Api>,
-        account: &ManagedAddress,
+        account: ManagedAddress,
     ) -> (Option<(BigUint, u64)>, Option<(BigUint, u64)>) {
         let total_pending_cycles =
-            self.get_pending_cycles_count(subscription.id, subscription.frequency, &account);
+            self.get_pending_cycles_count(subscription.id, subscription.frequency, account.clone());
 
         // Early return if there is nothing to charge
         if total_pending_cycles == 0 {
             return (None, None);
         }
 
-        let cycle_cost = self.get_subscription_amount_agreed_by_parties(subscription.id, &account);
+        let cycle_cost =
+            self.get_subscription_amount_agreed_by_parties(subscription.id, account.clone());
         let user_balance = self
             .account_balance(&account, &subscription.token_identifier)
             .get();

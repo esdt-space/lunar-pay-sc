@@ -41,7 +41,7 @@ pub trait OwnerEndpoints:
 
         // Create the subscription object
         let subscription = Subscription {
-            id: id,
+            id,
             owner: caller.clone(),
             time_created: timestamp,
 
@@ -49,8 +49,8 @@ pub trait OwnerEndpoints:
             token_identifier: token_identifier.clone(),
 
             frequency,
-            subscription_type: subscription_type,
-            amount_type: amount_type,
+            subscription_type,
+            amount_type,
         };
 
         self.subscription_ids().insert(id);
@@ -121,7 +121,8 @@ pub trait OwnerEndpoints:
 
         let subscription = self.subscription_by_id(id).get();
         let timestamp = self.blockchain().get_block_timestamp();
-        let (successful, failed) = self.trigger_subscription_for_account(&subscription, &account);
+        let (successful, failed) =
+            self.trigger_subscription_for_account(&subscription, account.clone());
 
         // Charge if affordable
         if let Some((amount, cycles)) = successful.clone() {

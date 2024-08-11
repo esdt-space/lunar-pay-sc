@@ -67,7 +67,7 @@ pub trait MemberEndpoints:
             .set(timestamp);
 
         // We charge one full cycle when the subscription membership is signed
-        self.charge_initial_subscription_cycle(subscription, &caller, timestamp);
+        self.charge_initial_subscription_cycle(subscription, caller.clone(), timestamp);
 
         self.create_subscription_membership_event(id, &caller, timestamp, metadata);
     }
@@ -75,18 +75,19 @@ pub trait MemberEndpoints:
     fn charge_initial_subscription_cycle(
         &self,
         subscription: Subscription<Self::Api>,
-        member: &ManagedAddress,
+        member: ManagedAddress,
         timestamp: u64,
     ) {
-        let cycle_cost = self.get_subscription_amount_agreed_by_parties(subscription.id, member);
+        let cycle_cost =
+            self.get_subscription_amount_agreed_by_parties(subscription.id, member.clone());
 
         self.do_internal_transfer_and_update_balances(
-            member,
+            &member,
             &subscription.owner,
             &subscription.token_identifier,
             &cycle_cost,
         );
-        self.subscription_member_last_trigger_time(subscription.id, member)
+        self.subscription_member_last_trigger_time(subscription.id, &member)
             .set(timestamp);
     }
 }
