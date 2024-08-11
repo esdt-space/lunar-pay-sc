@@ -95,35 +95,34 @@ pub trait ViewsModule:
         let user_subscriptions = self.account_subscriptions_created_list(&address);
 
         let mut tokens: ManagedVec<EgldOrEsdtTokenIdentifier> = ManagedVec::new();
-        let mut relative_amounts: ManagedVec<BigUint> = ManagedVec::new();
+        let mut final_amounts: ManagedVec<BigUint> = ManagedVec::new();
 
         for subscription_id in user_subscriptions.iter() {
             let subscription = self.subscription_by_id(subscription_id).get();
 
-            let total_members = self
-                .current_subscription_members_list(subscription.id)
-                .len();
-            let relative_amount = BigUint::from(total_members)
-                * self.subscription_amount(subscription.id).get()
-                / BigUint::from(subscription.frequency);
+            let (pending_amount, _affordable_amount) = self.get_subscription_charge_amounts(subscription_id, OptionalValue::None);
+
+            if pending_amount == BigUint::zero() {
+                continue;
+            }
 
             let token_index_option = tokens.find(&subscription.token_identifier);
 
             if token_index_option.is_some() {
                 let token_index = token_index_option.unwrap();
-                let _result = relative_amounts.set(
+                let _result = final_amounts.set(
                     token_index,
-                    &(relative_amounts.get(token_index).deref().clone() + relative_amount),
+                    &(final_amounts.get(token_index).deref().clone() + pending_amount),
                 );
             } else {
                 tokens.push(subscription.token_identifier);
-                relative_amounts.push(relative_amount);
+                final_amounts.push(pending_amount);
             }
         }
 
         let mut final_list: MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> =
             MultiValueEncoded::new();
-        for (token, final_amount) in tokens.iter().zip(relative_amounts.iter()) {
+        for (token, final_amount) in tokens.iter().zip(final_amounts.iter()) {
             final_list.push((token, final_amount.deref().clone()));
         }
 
