@@ -52,31 +52,34 @@ pub trait ViewsModule:
         let memberships = self.account_subscriptions_membership_list(&address);
 
         let mut tokens: ManagedVec<EgldOrEsdtTokenIdentifier> = ManagedVec::new();
-        let mut relative_amounts: ManagedVec<BigUint> = ManagedVec::new();
+        let mut final_amounts: ManagedVec<BigUint> = ManagedVec::new();
 
         for membership_id in memberships.iter() {
             let subscription = self.subscription_by_id(membership_id).get();
-            let relative_amount = self
-                .get_subscription_amount_agreed_by_parties(subscription.id, &address)
-                / BigUint::from(subscription.frequency);
+
+            let (pending_amount, _affordable_amount) = self.get_subscription_charge_amounts(membership_id, OptionalValue::Some(address.clone()));
+
+            if pending_amount == BigUint::zero() {
+                continue;
+            }
 
             let token_index_option = tokens.find(&subscription.token_identifier);
 
             if token_index_option.is_some() {
                 let token_index = token_index_option.unwrap();
-                let _result = relative_amounts.set(
+                let _result = final_amounts.set(
                     token_index,
-                    &(relative_amounts.get(token_index).deref().clone() + relative_amount),
+                    &(final_amounts.get(token_index).deref().clone() + pending_amount),
                 );
             } else {
                 tokens.push(subscription.token_identifier);
-                relative_amounts.push(relative_amount);
+                final_amounts.push(pending_amount);
             }
         }
 
         let mut final_list: MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> =
             MultiValueEncoded::new();
-        for (token, final_amount) in tokens.iter().zip(relative_amounts.iter()) {
+        for (token, final_amount) in tokens.iter().zip(final_amounts.iter()) {
             final_list.push((token, final_amount.deref().clone()));
         }
 
