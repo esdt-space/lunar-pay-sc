@@ -14,8 +14,8 @@ pub trait BalanceTransferModule:
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
-        self.decrease_account_token_balance(&sender, &token, &amount.clone());
-        self.send().direct(&receiver, &token, 0, &amount.clone());
+        self.decrease_account_token_balance(sender, token, &amount.clone());
+        self.send().direct(receiver, token, 0, &amount.clone());
     }
 
     fn do_internal_transfer_and_update_balances(
@@ -25,7 +25,7 @@ pub trait BalanceTransferModule:
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
     ) {
-        self.decrease_account_token_balance(&sender, &token, &amount);
-        self.increase_account_token_balance(&receiver, &token, &amount);
+        self.decrease_account_token_balance(sender, token, amount);
+        self.increase_account_token_balance(receiver, token, amount);
     }
 }
