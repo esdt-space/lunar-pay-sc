@@ -5,6 +5,7 @@ multiversx_sc::derive_imports!();
 
 mod modules;
 pub mod types;
+pub mod proxy;
 
 #[multiversx_sc::contract]
 pub trait LunarPay:

@@ -1,0 +1,8 @@
+[settings]
+
+[[proxy]]
+path = "output/proxy.rs"
+
+[[proxy]]
+path = "src/proxy.rs"
+ 
