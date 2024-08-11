@@ -32,7 +32,7 @@ pub trait EndpointsModule:
         let caller = self.blockchain().get_caller();
         let token = EgldOrEsdtTokenIdentifier::egld();
 
-        self.withdraw_event(&caller, &token, 0, &amount);
+        self.withdraw_event(&caller, &token, 0, amount);
         self.do_transfer_and_update_balance(&caller, &caller, &token, amount);
     }
 
@@ -56,7 +56,7 @@ pub trait EndpointsModule:
     #[endpoint(withdrawEsdt)]
     fn withdraw_esdt(&self, token: &EgldOrEsdtTokenIdentifier, amount: &BigUint) {
         let caller = self.blockchain().get_caller();
-        self.withdraw_event(&caller, &token, 0, &amount);
+        self.withdraw_event(&caller, token, 0, amount);
         self.do_transfer_and_update_balance(&caller, &caller, token, amount);
     }
 }
