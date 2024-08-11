@@ -14,12 +14,22 @@ pub trait ViewsModule:
 {
     /// It returns the subscription charge amount information.
     /// Returns: (pendingChargeAmount, affordableChargeAmount)
-    #[view(getUserSubscriptionChargeAmounts)]
-    fn get_subscription_charge_amounts(&self, id: u64) -> (BigUint, BigUint) {
+    #[view(getSubscriptionChargeAmounts)]
+    fn get_subscription_charge_amounts(&self, id: u64, opt_address: OptionalValue<ManagedAddress>) -> (BigUint, BigUint) {
         let mut pending_amount = BigUint::zero();
         let mut affordable_amount = BigUint::zero();
 
         let subscription = self.subscription_by_id(id).get();
+
+        if opt_address.is_some() {
+            let address = opt_address.into_option().unwrap();
+
+            let (account_pending_amount, account_affordable_amount) =
+                self.get_subscription_charge_amounts_for_account(&subscription, &address);
+
+            return (account_pending_amount, account_affordable_amount);
+        }
+
         let members = self.current_subscription_members_list(id);
 
         for account in members.iter() {
