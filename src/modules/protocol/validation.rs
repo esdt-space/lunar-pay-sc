@@ -4,7 +4,7 @@ multiversx_sc::derive_imports!();
 #[multiversx_sc::module]
 pub trait ValidationModule: crate::modules::protocol::storage::StorageModule {
     fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier) -> bool {
-        self.whitelisted_token_ids().contains(&token)
+        self.whitelisted_token_ids().contains(token)
     }
 
     fn require_token_is_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier) {
@@ -12,7 +12,7 @@ pub trait ValidationModule: crate::modules::protocol::storage::StorageModule {
     }
 
     fn is_address_whitelisted(&self, address: &ManagedAddress) -> bool {
-        self.whitelisted_addresses().contains(&address)
+        self.whitelisted_addresses().contains(address)
     }
 
     fn require_address_is_whitelisted(&self, address: &ManagedAddress) {

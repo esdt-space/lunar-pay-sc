@@ -21,7 +21,7 @@ pub trait EndpointsModule:
     #[endpoint(removeWhitelistedToken)]
     fn remove_whitelisted_token(&self, token: &EgldOrEsdtTokenIdentifier) {
         require!(
-            self.is_token_whitelisted(&token),
+            self.is_token_whitelisted(token),
             "This token is not whitelisted"
         );
 
